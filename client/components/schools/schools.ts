@@ -3,7 +3,8 @@ namespace schools {
 	angular.module('app.schools', [
 		'ui.router'
 	])
-		.config(config);
+	.config(config)
+	.controller('SchoolController', SchoolController);
 	
 	/* @ngInject */
 	function config($stateProvider: any) {
@@ -24,7 +25,7 @@ namespace schools {
 			})
 	
 		/////////////////////
-		// Contacts > List //
+		// Schools > List //
 		/////////////////////
 	
 		// Using a '.' within a state name declares a child within a parent.
@@ -46,14 +47,49 @@ namespace schools {
 				// You can pair a controller to your template. There *must* be a template to pair with.
 				controller: ['$scope', '$state', '$http',
 					function($scope: any, $state: any, $http: angular.IHttpService) {
-						$http.get(url).then((resp) => {
-							$scope.schools = resp.data;
+						$scope.deleteSchool = function (data: any)  {
+							console.log("pre deleting: " + JSON.stringify(data));
+							$http.delete(`${url}/${data.id}`).then((resp) => {
+								console.log("deleting: " + JSON.stringify(resp));
+								if (resp.data['success']) {
+									$state.go($state.current, {}, {reload: true});
+								}
+							}); 
+						};
+		
+						$http.get(url + "/_find").then((resp) => {
+							$scope.schools = resp.data['data'];
 						});
 					}]
 			})
+			
+		/////////////////////
+		// Schools > Add/Modify //
+		/////////////////////
 	
+		// Using a '.' within a state name declares a child within a parent.
+		// So you have a new state 'list' within the parent 'schools' state.
+			.state('schools.edit', {
+	
+				// Using an empty url means that this child state will become active
+				// when its parent's url is navigated to. Urls of child states are
+				// automatically appended to the urls of their parent. So this state's
+				// url is '/schools' (because '/schools' + '').
+				url: '',
+	
+				// IMPORTANT: Now we have a state that is not a top level state. Its
+				// template will be inserted into the ui-view within this state's
+				// parent's template; so the ui-view within schools.html. This is the
+				// most important thing to remember about templates.
+				templateUrl: 'components/schools/schools.edit.html',
+				
+				// You can pair a controller to your template. There *must* be a template to pair with.
+				controller: SchoolController,
+				controllerAs: 'schoolCtrl'
+			})
+			
 		///////////////////////
-		// Contacts > Detail //
+		// Schools > Detail //
 		///////////////////////
 	
 		// You can have unlimited children within a state. Here is a second child
@@ -89,7 +125,7 @@ namespace schools {
 						controller: ['$scope', '$stateParams', '$http',
 							function($scope: any, $stateParams: any, $http: angular.IHttpService) {
 								$http.get(`${url}/${$stateParams.schoolId}`).then((resp) => {
-									$scope.school = resp.data;
+									$scope.school = resp.data['data'];
 								});
 							}]
 					}
@@ -97,4 +133,47 @@ namespace schools {
 			});
 	}
 	
+	export class SchoolController {
+		
+		private school: any;
+		private schoolError: boolean;
+		private errorMessage: string;
+		/** @ngInject */
+		constructor(private $SchoolRESTService: any, private $cookies: any, private AuthToken: any, private $state: any) {
+			console.log("constructor ");	
+		}
+		
+		editSchool() {
+			this.$SchoolRESTService.editSchool(this.school).then((response: any) => {
+				console.log("add " + response);
+				this.schoolError = !response.success;
+				this.errorMessage = response.msg;
+				if (response.success) {
+					this.$state.transitionTo('schools.list');
+				}
+			});
+		}
+		
+		deleteSchool() {
+			this.$SchoolRESTService.deleteSchool(this.school).then((response: any) => {
+				console.log("delete " + response);
+				this.schoolError = !response.success;
+				this.errorMessage = response.msg;
+				if (response.success) {
+					this.$state.transitionTo('schools.list');
+				}
+			});
+		}
+		
+		updateSchool() {
+			this.$SchoolRESTService.updateSchool(this.school).then((response: any) => {
+				console.log("update " + response);
+				this.schoolError = !response.success;
+				this.errorMessage = response.msg;
+				if (response.success) {
+					this.$state.transitionTo('schools.list');
+				}
+			});
+		}
+	}
 }

@@ -12,6 +12,11 @@ export interface Notification {
   data?: any;
 }
 
+export interface AuthorizationEvaluationResponse {
+  authorized: boolean;
+  msg?: string;
+}
+
 export interface AuthorizationData {
   user?: User;
 }

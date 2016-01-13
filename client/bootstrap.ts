@@ -8,6 +8,8 @@ import './components/login/login.service';
 import './components/helper/helper';
 import './components/helper/progressBar';
 import './components/auth/auth.service';
+import './components/schools/schools';
+import './components/schools/schools.service';
 
 declare var moment: moment.MomentStatic;
 
@@ -68,15 +70,7 @@ namespace app {
         url: '/',
         templateUrl: 'components/main/main.html',
         controller: 'MainController',
-        controllerAs: 'main',
-        resolve: {
-          aquiredProgram: function($http: angular.IHttpService, AuthToken: any) {
-            return $http.get('/api/aquired-program/_find').then(function(response) {
-             
-              return response.data; 
-            });
-          }
-        }
+        controllerAs: 'main'
       });
 
     $urlRouterProvider.otherwise('/');
@@ -99,7 +93,8 @@ namespace app {
     'app.signup',
     'app.login',
     'app.helper',
-    'app.ui.helper'
+    'app.ui.helper',
+    'app.schools'
   ])
     .config(config)
     .config(routerConfig)

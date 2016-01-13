@@ -6,81 +6,74 @@ import {DatabaseObjectUtil} from './db_util';
 
 export class BaseAuthorizationService<T extends BaseDto>{
 	
-	protected isCreateAuthorized(modelOptions: ModelOptions = {}, reject: Function, data?: T): void {
+	protected isCreateAuthorized(modelOptions: ModelOptions = {}, data?: T): any {
 		if (modelOptions.requireAuthorization) {
-			this.evaluateCreationAuthorization(modelOptions, reject, data);
+			return this.evaluateCreationAuthorization(modelOptions, data);
 		}
 	}
 	
-	protected evaluateCreationAuthorization(modelOptions: ModelOptions = {}, reject: Function, data?: T): void {
+	protected evaluateCreationAuthorization(modelOptions: ModelOptions = {}, data?: T): any {
 		if (!this.existsUser(modelOptions.authorization)) {
-			reject(new Error("Unauthorized user"));
+			return "Unauthorized user";
 		}
 	}
 	
-	protected isUpdateAuthorized(modelOptions: ModelOptions = {}, reject: Function, data?: T): void {
+	protected isUpdateAuthorized(modelOptions: ModelOptions = {}, data?: T): any {
 		if (modelOptions.requireAuthorization) {
-			this.evaluateUpdateAuthorization(modelOptions, reject, data);
+			return this.evaluateUpdateAuthorization(modelOptions, data);
 		}
 	}
 	
-	protected evaluateUpdateAuthorization(modelOptions: ModelOptions = {}, reject: Function, data?: T): void {
+	protected evaluateUpdateAuthorization(modelOptions: ModelOptions = {}, data?: T): any {
 		if (!this.existsUser(modelOptions.authorization)) {
-			reject(new Error("Unauthorized user"));
+			return "Unauthorized user";
 		}
 	}
 	
-	protected isRemoveAuthorized(modelOptions: ModelOptions = {}, reject: Function, data?: T): void {
+	protected isRemoveAuthorized(modelOptions: ModelOptions = {}, data?: T): any {
 		if (modelOptions.requireAuthorization) {
-			this.evaluateRemoveAuthorization(modelOptions, reject, data);
+			return this.evaluateRemoveAuthorization(modelOptions, data);
 		}
 	}
 	
-	protected evaluateRemoveAuthorization(modelOptions: ModelOptions = {}, reject: Function, data?: T): void {
+	protected evaluateRemoveAuthorization(modelOptions: ModelOptions = {}, data?: T): any {
 		if (!this.existsUser(modelOptions.authorization)) {
-			reject(new Error("Unauthorized user"));
+			return "Unauthorized user";
 		}
 	}
 	
-	protected isSearchAuthorized(modelOptions: ModelOptions = {}, reject: Function, data?: T): void {
+	protected isSearchAuthorized(modelOptions: ModelOptions = {}, data?: T): any {
 		if (modelOptions.requireAuthorization) {
-			this.evaluateSearchAuthorization(modelOptions, reject, data);
+			return this.evaluateSearchAuthorization(modelOptions, data);
 		}
 	}
 	
-	protected evaluateSearchAuthorization(modelOptions: ModelOptions = {}, reject: Function, data?: T): void {
+	protected evaluateSearchAuthorization(modelOptions: ModelOptions = {}, data?: T): any {
 		if (!this.existsUser(modelOptions.authorization)) {
-			reject(new Error("Unauthorized user"));
+			return "Unauthorized user";
 		}
 	}
 		
-	protected isUpdateAuthorizedExecution(modelOptions: ModelOptions = {}, reject: Function, data?: T): void {
+	protected isUpdateAuthorizedExecution(modelOptions: ModelOptions = {}, data?: T): any {
 		if (!modelOptions.requireAuthorization) {
-			this.evaluateUpdateExecutionAuthorization(modelOptions, reject, data);
+			return this.evaluateUpdateExecutionAuthorization(modelOptions, data);
 		}
 	}
 	
-	protected evaluateUpdateExecutionAuthorization(modelOptions: ModelOptions = {}, reject: Function, data?: T): void {
+	protected evaluateUpdateExecutionAuthorization(modelOptions: ModelOptions = {}, data?: T): any {
 	}
 	
-	protected isRemoveAuthorizedExecution(modelOptions: ModelOptions = {}, reject: Function, data?: T): void {
+	protected isRemoveAuthorizedExecution(modelOptions: ModelOptions = {}, data?: T): any {
 		if (!modelOptions.requireAuthorization) {
-			this.evaluateRemoveExecutionAuthorization(modelOptions, reject, data);
+			return this.evaluateRemoveExecutionAuthorization(modelOptions, data);
 		}
 	}
 	
-	protected evaluateRemoveExecutionAuthorization(modelOptions: ModelOptions = {}, reject: Function, data?: T): void {
+	protected evaluateRemoveExecutionAuthorization(modelOptions: ModelOptions = {}, data?: T): any {
 	}
 	
 	protected existsUser(authorization: AuthorizationData): boolean {
 		if (ObjectUtil.isBlank(authorization) || ObjectUtil.isBlank(authorization.user)) {
-			return false;
-		}
-		return true;
-	}
-	
-	protected existsOrganizationMember(authorization: AuthorizationData): boolean {
-		if (ObjectUtil.isBlank(authorization) || ObjectUtil.isBlank(authorization.organizationMember)) {
 			return false;
 		}
 		return true;

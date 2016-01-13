@@ -1,35 +1,51 @@
 import * as express from 'express';
 
-import {sendError} from '../core/web_util';
+import {sendError, getAuthorizationData, formatSend} from '../core/web_util';
 import {clientService} from './client_service';
-import {Client} from '../../client/core/dto';
+import {Client, ModelOptions} from '../../client/core/dto';
 
 const router = express.Router();
 
 router.post('/', (req, res) => {
-  clientService.createOne(req.body)
-    .then((client: Client) => res.send(client), (err) => sendError(res, err));
+  const modelOptions: ModelOptions = {
+    authorization: getAuthorizationData(req),
+    regularExpresion: true
+  };
+  clientService.createOne(req.body, modelOptions)
+    .then((client: Client) => formatSend(res, client), (err) => sendError(res, err));
 });
 
 router.put('/:id', (req, res) => {
-  req.body._id = req.params.id;
-  clientService.updateOne(req.body)
-    .then((client: Client) => res.send(client), (err) => sendError(res, err));
+  const modelOptions: ModelOptions = {
+    authorization: getAuthorizationData(req),
+    additionalData: { _id: req.params.id }
+  };
+  clientService.updateOne(req.body, modelOptions)
+    .then((client: Client) => formatSend(res, client), (err) => sendError(res, err));
 });
 
 router.delete('/:id', (req, res) => {
-  clientService.removeOneById(req.params.id)
-    .then((client: Client) => res.send(client), (err) => sendError(res, err));
+  const modelOptions: ModelOptions = {
+    authorization: getAuthorizationData(req)
+  };
+  clientService.removeOneById(req.params.id, modelOptions)
+    .then((client: Client) => formatSend(res, client), (err) => sendError(res, err));
 });
 
 router.get('/', (req: express.Request, res: express.Response) => {
-  clientService.find(req.query)
-    .then((clients: Client[]) => res.send(clients), (err: any) => sendError(res, err));
+  const modelOptions: ModelOptions = {
+    authorization: getAuthorizationData(req)
+  };
+  clientService.find(req.query, modelOptions)
+    .then((clients: Client[]) => formatSend(res, clients), (err: any) => sendError(res, err));
 });
 
 router.get('/:id', (req: express.Request, res: express.Response) => {
-  clientService.findOneById(req.params.id)
-    .then((client: Client) => res.send(client), (err: any) => sendError(res, err));
+  const modelOptions: ModelOptions = {
+    authorization: getAuthorizationData(req)
+  };
+  clientService.findOneById(req.params.id, modelOptions)
+    .then((client: Client) => formatSend(res, client), (err: any) => sendError(res, err));
 });
 
 

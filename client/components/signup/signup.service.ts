@@ -1,10 +1,9 @@
-import './signup';
+import '../login/login';
 import {BACK_END_ROUTE, SignUp} from '../../core/dto';
 
 
 namespace SignUpServices {
 
-	
 	
 	/** @ngInject */
     function $SignUpRESTResource($resource: angular.resource.IResourceService): angular.resource.IResourceClass<any> {
@@ -18,7 +17,7 @@ namespace SignUpServices {
 			},
 			'getClient': {
 				method: 'GET',
-				url: BACK_END_ROUTE + '/client/_find'
+				url: BACK_END_ROUTE + '/client/_find',
 			},
 			'getFrequency': {
 				method: 'GET',
@@ -53,17 +52,17 @@ namespace SignUpServices {
 		getClients = (params: any) => {
 			return this.$resourceHelper.resourceRESTCall(this.$SignUpRESTResource, "getClients", params);
 		};
-		getPaymentTypes = (country: any) => {
-			return this.$resourceHelper.resourceRESTCall(this.$SignUpRESTResource, "getPaymentTypes", {country: country});
+		getPaymentTypes = (params: any) => {
+			return this.$resourceHelper.resourceRESTCall(this.$SignUpRESTResource, "getPaymentTypes", params);
 		};
 		getFrequencies = (params: any) => {
 			return this.$resourceHelper.resourceRESTCall(this.$SignUpRESTResource, "getFrequencies", params );
 		};
 		isUsernameAssigned = (username: string) => {
-			return this.$resourceHelper.resourceRESTCall(this.$SignUpRESTResource, "isUsernameAssigned", {userName: username});
+			return this.$resourceHelper.resourceRESTCall(this.$SignUpRESTResource, "isUserRegistered", {userName: username});
 		};
 		isEmailAssigned = (email: string) => {
-			return this.$resourceHelper.resourceRESTCall(this.$SignUpRESTResource, "isEmailAssigned", {email: email});
+			return this.$resourceHelper.resourceRESTCall(this.$SignUpRESTResource, "isUserRegistered", {email: email});
 		};
 		signUp = (signUpDetails: SignUp) => {
 			return this.$resourceHelper.resourceRESTCall(this.$SignUpRESTResource, "signUp", signUpDetails);

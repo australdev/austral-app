@@ -10,9 +10,9 @@ router.post('/', (req, res) => {
   const modelOptions: ModelOptions = {
     authorization: getAuthorizationData(req),
     regularExpresion: true,
-    requireAuthorization: false
+    requireAuthorization: true
   };
-  schoolService.createOne(req.body)
+  schoolService.createOne(req.body, modelOptions)
     .then((school: School) => formatSend(res, school), (err) => sendError(res, err));
 });
 
@@ -23,7 +23,7 @@ router.put('/:id', (req, res) => {
     requireAuthorization: false,
     additionalData: { _id: req.params.id }
   };
-  schoolService.updateOne(req.body)
+  schoolService.updateOne(req.body, modelOptions)
     .then((school: School) => formatSend(res, school), (err) => sendError(res, err));
 });
 
@@ -33,7 +33,7 @@ router.delete('/:id', (req, res) => {
     regularExpresion: true,
     requireAuthorization: false
   };
-  schoolService.removeOneById(req.params.id)
+  schoolService.removeOneById(req.params.id, modelOptions)
     .then((school: School) => formatSend(res, school), (err) => sendError(res, err));
 });
 
@@ -53,7 +53,7 @@ router.get('/:id', (req: express.Request, res: express.Response) => {
     regularExpresion: true,
     requireAuthorization: false
   };
-  schoolService.findOneById(req.params.id)
+  schoolService.findOneById(req.params.id, modelOptions)
     .then((school: School) => formatSend(res, school), (err: any) => sendError(res, err));
 });
 
