@@ -1,0 +1,150 @@
+<h2>AquiredPrograms Add</h2>
+<ul>
+  <h2>{{aquiredProgramCtrl.aquiredProgram}}</h2>
+  <div class="container container-small">
+    <div ui-view class="slide">
+      <form class="form-horizontal" ng-submit="aquiredProgramCtrl.editAquiredProgram()">
+      
+      <div class="form-group">
+        <div class="col-md-5 control-label">
+          <label for="school" class="margin-b-n"><strong class="text-danger">*</strong> School</label>
+        </div>
+        <div class="col-md-7">
+          
+          <select class="form-control" id="school" name="school" required ng-options="school._id as school.name for school in aquiredProgramCtrl.schools" ng-model="aquiredProgramCtrl.aquiredProgram.school" >
+            <option></option>
+          </select>
+        </div>
+      </div>
+    
+      <div class="form-group">
+        <div class="col-md-5 control-label">
+          <label for="client" class="margin-b-n"><strong class="text-danger">*</strong> Client</label>
+        </div>
+        <div class="col-md-7">
+          
+          <select class="form-control" id="client" name="client" required ng-options="client._id as client.name for client in aquiredProgramCtrl.clients" ng-model="aquiredProgramCtrl.aquiredProgram.client" >
+            <option></option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <div class="col-md-5 control-label">
+          <label for="idProgramClient" class="margin-b-n"><strong class="text-danger">*</strong> idProgramClient</label>
+          <!--<i class="fa fa-spinner pull-right fa-lg fa-spin" ng-show="aquiredProgramCtrl.checkingidProgramClient"></i>
+          <i class="fa fa-check pull-right fa-lg" ng-show="aquiredProgramCtrl.availableidProgramClient"></i>-->
+        </div>
+        <div class="col-md-7">
+          <input type="text" class="form-control" id="idProgramClient" name="idProgramClient" ng-model="aquiredProgramCtrl.aquiredProgram.idProgramClient" required>
+        </div>
+      </div>
+  
+      <!--form-group-->
+      <div class="form-group">
+        <div class="col-md-5 control-label">
+          <label for="name" class="margin-b-n"><strong class="text-danger">*</strong> Program Name</label>
+          <!--<i class="fa fa-spinner pull-right fa-lg fa-spin" ng-show="aquiredProgramCtrl.checkingUsername"></i>
+          <i class="fa fa-check pull-right fa-lg" ng-show="aquiredProgramCtrl.availableUsername"></i>-->
+        </div>
+        <div class="col-md-7">
+          <input type="text" class="form-control" id="name" name="name" ng-model="aquiredProgramCtrl.aquiredProgram.name" required >
+        </div>
+      <!--<div class="form-group" ng-show="aquiredProgramCtrl.availableUsername == false"><p class="pull-right text-danger" >Username already been taken</p></div>
+      </div>-->
+      
+      <!--form-group-->
+      <div class="form-group">
+        <div class="col-md-5 control-label">
+          <label for="startingDate" class="margin-b-n"><strong class="text-danger">*</strong> Start</label>
+          <!--<i class="fa fa-spinner pull-right fa-lg fa-spin" ng-show="aquiredProgramCtrl.checkingUsername"></i>
+          <i class="fa fa-check pull-right fa-lg" ng-show="aquiredProgramCtrl.availableUsername"></i>-->
+        </div>
+        <div class="col-md-7">
+          <input type="date" class="form-control" id="startingDate" name="startingDate" ng-model="aquiredProgramCtrl.aquiredProgram.startingDate" >
+        </div>
+      <!--<div class="form-group" ng-show="aquiredProgramCtrl.availableUsername == false"><p class="pull-right text-danger" >Username already been taken</p></div>
+      </div>-->
+  
+      <!--form-group-->
+      <div class="form-group">
+        <div class="col-md-5 control-label">
+          <label for="endingDate" class="margin-b-n"><strong class="text-danger">*</strong> Finish</label>
+          <!--<i class="fa fa-spinner pull-right fa-lg fa-spin" ng-show="aquiredProgramCtrl.checkingUsername"></i>
+          <i class="fa fa-check pull-right fa-lg" ng-show="aquiredProgramCtrl.availableUsername"></i>-->
+        </div>
+        <div class="col-md-7">
+          <input type="date" class="form-control" id="endingDate" name="endingDate" ng-model="aquiredProgramCtrl.aquiredProgram.endingDate" >
+        </div>
+      <!--<div class="form-group" ng-show="aquiredProgramCtrl.availableUsername == false"><p class="pull-right text-danger" >Username already been taken</p></div>
+      </div>-->
+      
+      <!--form-group-->
+      <div class="form-group">
+        <div class="col-md-5 control-label">
+          <label for="courseCost" class="margin-b-n"><strong class="text-danger">*</strong> Course Costs</label>
+          <!--<i class="fa fa-spinner pull-right fa-lg fa-spin" ng-show="aquiredProgramCtrl.checkingUsername"></i>
+          <i class="fa fa-check pull-right fa-lg" ng-show="aquiredProgramCtrl.availableUsername"></i>-->
+        </div>
+        <div class="col-md-7">
+          <input type="text" class="form-control" id="courseCost" name="courseCost" ng-model="aquiredProgramCtrl.aquiredProgram.courseCost" required >
+        </div>
+      <!--<div class="form-group" ng-show="aquiredProgramCtrl.availableUsername == false"><p class="pull-right text-danger" >Username already been taken</p></div>
+      </div>-->
+      
+      <!--form-group-->
+      <div class="form-group">
+        <div class="col-md-5 control-label">
+          <label for="otherCost" class="margin-b-n"><strong class="text-danger">*</strong> Other Costs</label>
+          <!--<i class="fa fa-spinner pull-right fa-lg fa-spin" ng-show="aquiredProgramCtrl.checkingUsername"></i>
+          <i class="fa fa-check pull-right fa-lg" ng-show="aquiredProgramCtrl.availableUsername"></i>-->
+        </div>
+        <div class="col-md-7">
+          <input type="text" class="form-control" id="otherCost" name="otherCost" ng-model="aquiredProgramCtrl.aquiredProgram.otherCost" required >
+        </div>
+      <!--<div class="form-group" ng-show="aquiredProgramCtrl.availableUsername == false"><p class="pull-right text-danger" >Username already been taken</p></div>
+      </div>-->
+      
+      <!--form-group-->
+      <div class="form-group">
+        <div class="col-md-5 control-label">
+          <label for="totalCost" class="margin-b-n"><strong class="text-danger">*</strong> Total Costs</label>
+          <!--<i class="fa fa-spinner pull-right fa-lg fa-spin" ng-show="aquiredProgramCtrl.checkingUsername"></i>
+          <i class="fa fa-check pull-right fa-lg" ng-show="aquiredProgramCtrl.availableUsername"></i>-->
+        </div>
+        <div class="col-md-7">
+          <input type="text" class="form-control" id="totalCost" name="totalCost" ng-model="aquiredProgramCtrl.aquiredProgram.totalCost" required >
+        </div>
+      <!--<div class="form-group" ng-show="aquiredProgramCtrl.availableUsername == false"><p class="pull-right text-danger" >Username already been taken</p></div>
+      </div>-->
+      
+      <!--form-group-->
+      <div class="form-group">
+        <div class="col-md-5 control-label">
+          <label for="percentageComm" class="margin-b-n"><strong class="text-danger">*</strong> Commision (%)</label>
+          <!--<i class="fa fa-spinner pull-right fa-lg fa-spin" ng-show="aquiredProgramCtrl.checkingUsername"></i>
+          <i class="fa fa-check pull-right fa-lg" ng-show="aquiredProgramCtrl.availableUsername"></i>-->
+        </div>
+        <div class="col-md-7">
+          <input type="text" class="form-control" id="percentageComm" name="percentageComm" ng-model="aquiredProgramCtrl.aquiredProgram.percentageComm" required >
+        </div>
+      <!--<div class="form-group" ng-show="aquiredProgramCtrl.availableUsername == false"><p class="pull-right text-danger" >Username already been taken</p></div>
+      </div>-->
+      
+      <div class="form-group">
+        <div class="col-md-5 control-label">
+          <label for="frequency" class="margin-b-n"><strong class="text-danger">*</strong> Frequency</label>
+        </div>
+        <div class="col-md-7">
+          
+          <select class="form-control" id="frequency" name="frequency" required ng-options="frequency._id as frequency.name for frequency in aquiredProgramCtrl.frequencies" ng-model="aquiredProgramCtrl.aquiredProgram.frequency" >
+            <option></option>
+          </select>
+        </div>
+      </div>
+      
+      <button class="btn btn-primary btn-block margin-b-l"  type="submit">Add</button>
+    </form>
+    </div>
+  </div>
+</ul>

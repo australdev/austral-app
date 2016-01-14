@@ -52,7 +52,6 @@ export class Authentication {
 					req.body.austral.user = user;	
 				}
 				
-				console.log("authentication user " + JSON.stringify(user));
 				return next();
 			})
 			.catch((err) => {

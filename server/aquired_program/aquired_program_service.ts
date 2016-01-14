@@ -1,11 +1,14 @@
-﻿import {AquiredProgram} from '../../client/core/dto';
+﻿import {AquiredProgram, ModelOptions} from '../../client/core/dto';
 import {AquiredProgramModel} from '../core/model';
 import {BaseService} from '../core/base_service';
 
 export class AquiredProgramService extends BaseService<AquiredProgram> {
 
 	constructor() {
-		super(AquiredProgramModel);
+		const defaultModelOptions: ModelOptions = {
+			population: 'school client period'
+		};
+		super(AquiredProgramModel, defaultModelOptions);
 	}
 
 }

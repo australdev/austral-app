@@ -13,9 +13,9 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="main_navbar">
       <ul class="nav navbar-nav">
-        <li ng-class="{active: $state.includes('contacts')}"><a ui-sref="contacts.list">Contacts</a></li>
+        <li ng-class="{active: $state.includes('clients')}"><a ui-sref="clients.list">Clients</a></li>
         <li ng-class="{active: $state.includes('schools')}"><a ui-sref="schools.list">Schools</a></li>
-        <li ui-sref-active="active"><a ui-sref="signup">Sign up</a></li>
+        <li ng-class="{active: $state.includes('aquiredPrograms')}"><a ui-sref="aquiredPrograms.list">Aquired Programs</a></li>
       </ul>
     </div>
 </nav>

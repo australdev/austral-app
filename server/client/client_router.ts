@@ -32,7 +32,7 @@ router.delete('/:id', (req, res) => {
     .then((client: Client) => formatSend(res, client), (err) => sendError(res, err));
 });
 
-router.get('/', (req: express.Request, res: express.Response) => {
+router.get('/_find', (req: express.Request, res: express.Response) => {
   const modelOptions: ModelOptions = {
     authorization: getAuthorizationData(req)
   };

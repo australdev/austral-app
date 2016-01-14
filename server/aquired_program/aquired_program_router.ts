@@ -17,7 +17,7 @@ router.post('/', (req, res) => {
 router.put('/:id', (req, res) => {
   const modelOptions: ModelOptions = {
     authorization: getAuthorizationData(req),
-    additionalData: {_id: req.params.id}
+    additionalData: { _id: req.params.id }
   };
   aquiredProgramService.updateOne(req.body, modelOptions)
     .then((aquiredProgram: AquiredProgram) => formatSend(res, aquiredProgram), (err) => sendError(res, err));

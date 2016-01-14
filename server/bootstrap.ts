@@ -15,6 +15,7 @@ import * as schoolRouter from './school/school_router';
 import * as aquiredProgramRouter from './aquired_program/aquired_program_router';
 import * as loginRouter from './login/login_router';
 import * as signupRouter from './signup/signup_router';
+import * as clientRouter from './client/client_router';
 
 const INDEX_DEST_PATH = resolve(PATH.cwd, PATH.dest.app.base, 'index.html');
 
@@ -38,6 +39,7 @@ server.use('/api/school', schoolRouter);
 server.use('/api/aquired-program', aquiredProgramRouter);
 server.use('/api/login', loginRouter);
 server.use('/api/signup', signupRouter);
+server.use('/api/client', clientRouter);
 
 server.all(APP_BASE + '*', (req, res) =>
   res.sendFile(INDEX_DEST_PATH)
