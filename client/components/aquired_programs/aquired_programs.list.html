@@ -27,13 +27,12 @@
     <tbody>
       <tr ng-repeat="aquiredProgram in aquiredPrograms" >
           <td>{{ aquiredProgram.school.name }}</td>
-          <td>{{ aquiredPrograme.idProgramClient }}</td>
+          <td>{{ aquiredProgram.idProgramClient }}</td>
           <td>{{ aquiredProgram.client.name }}</td>
           <td>{{ aquiredProgram.name }}</td>
-          <td>{{ aquiredProgram.startingDate | date: 'small'}}</td>
-          <td>{{ aquiredProgram.endingDate | date: 'small'}}</td>
+          <td>{{ aquiredProgram.startingDate | date:'dd-MM-yyyy' }}</td>
+          <td>{{ aquiredProgram.endingDate | date:'dd-MM-yyyy' }}</td>
           <td>{{ aquiredProgram.courseCost }}</td>
-          <td>{{ aquiredProgram.otherCost}}</td>
           <td>{{ aquiredProgram.otherCost}}</td>
           <td>{{ aquiredProgram.totalCost }}</td>
           <td>{{ aquiredProgram.percentageComm}}</td>
@@ -51,7 +50,7 @@
           </a>
           </td>
           <td>
-            <a ui-sref="aquiredPrograms.detail({aquiredProgramId:aquiredProgram._id})">
+            <a ui-sref="aquiredPrograms.payments.list({aquiredProgramId:aquiredProgram._id})">
               <button class="btn btn-default">
                 <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
               </button> 

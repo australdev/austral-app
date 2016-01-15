@@ -6,7 +6,7 @@ export class AquiredProgramService extends BaseService<AquiredProgram> {
 
 	constructor() {
 		const defaultModelOptions: ModelOptions = {
-			population: 'school client period'
+			population: 'school client frequency'
 		};
 		super(AquiredProgramModel, defaultModelOptions);
 	}

@@ -11,7 +11,6 @@ import './components/auth/auth.service';
 import './components/schools/schools';
 import './components/schools/schools.service';
 import './components/aquired_programs/aquired_programs';
-import './components/aquired_programs/aquired_programs.service';
 import './components/clients/clients';
 import './components/clients/clients.service';
 

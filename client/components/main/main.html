@@ -1,8 +1,22 @@
-<div class="page-header">
-  
-  <h1>Main page</h1>
-  <main-navbar></main-navbar>
-  
+<main-navbar></main-navbar>
+
+<div class="row">
+  <div class="span3">
+    <div class="pa-sidebar well well-small">
+      <ul class="nav nav-list">
+        <div class="container-fluid">
+          <h1>Main page</h1>
+          <button class="btn btn-danger" ng-click="main.logout()">Log out</button>
+        </div>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Our unnamed main ui-view for this template -->
+  <div ui-view class="span9 slide"></div>
 </div>
 
-<button class="btn btn-danger" ng-click="main.logout()">Log out</button>
+<div class="container-fluid">
+  <h1>Main page</h1>
+  <button class="btn btn-danger" ng-click="main.logout()">Log out</button>
+</div>

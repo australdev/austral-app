@@ -7,18 +7,29 @@ import {Payment, ModelOptions} from '../../client/core/dto';
 const router = express.Router();
 
 router.post('/', (req, res) => {
-  paymentService.createOne(req.body)
+  const modelOptions: ModelOptions = {
+    authorization: getAuthorizationData(req),
+    regularExpresion: true
+  };
+  paymentService.createOne(req.body, modelOptions)
     .then((payments: Payment) => formatSend(res, payments), (err) => sendError(res, err));
 });
 
 router.put('/:id', (req, res) => {
-  req.body._id = req.params.id;
-  paymentService.updateOne(req.body)
+  const modelOptions: ModelOptions = {
+    authorization: getAuthorizationData(req),
+    regularExpresion: true
+  };
+  paymentService.updateOne(req.body, modelOptions)
     .then((payments: Payment) => formatSend(res, payments), (err) => sendError(res, err));
 });
 
 router.delete('/:id', (req, res) => {
-  paymentService.removeOneById(req.params.id)
+  const modelOptions: ModelOptions = {
+    authorization: getAuthorizationData(req),
+    regularExpresion: true
+  };
+  paymentService.removeOneById(req.params.id, modelOptions)
     .then((payments: Payment) => formatSend(res, payments), (err) => sendError(res, err));
 });
 
@@ -33,7 +44,11 @@ router.get('/_find', (req: express.Request, res: express.Response) => {
 });
 
 router.get('/:id', (req: express.Request, res: express.Response) => {
-  paymentService.findOneById(req.params.id)
+  const modelOptions: ModelOptions = {
+    authorization: getAuthorizationData(req),
+    regularExpresion: true
+  };
+  paymentService.findOneById(req.params.id, modelOptions)
     .then((payments: Payment) => formatSend(res, payments), (err: any) => sendError(res, err));
 });
 

@@ -1,8 +1,21 @@
-<div>
+<!--<div>
   <h2>{{aquiredProgram.name}}</h2>
   <div ui-view class="slide">
     <!-- Example of default content. This content will be replace as soon as
-         this ui-view is populate with a template -->
+         this ui-view is populate with a template 
     <small class="muted">Click on a aquiredProgram item to view and/or edit it.</small>
   </div>
+</div>-->
+
+<div class="row">
+  <div class="span3">
+    <div class="pa-sidebar well well-small">
+      <ul class="nav nav-list">
+        <li ng-class="{ active: $state.includes('aquiredPrograms.payments.list') }"><a ui-sref="aquiredPrograms.payments.list({aquiredProgramId:aquiredProgram._id})">All Payments</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Our unnamed main ui-view for this template -->
+  <div ui-view class="span9 slide"></div>
 </div>

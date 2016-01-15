@@ -54,7 +54,7 @@ const schemas = {
     totalCost: { type: Number }, //Other fees + Cost
     numberWeeks: { type: Number },
     percentageComm: { type: Number }, //Percentage commision
-    period: { type: ObjectId, ref: 'frequency' }, // monthly, trimester, semester, etc
+    frequency: { type: ObjectId, ref: 'frequency' }, // monthly, trimester, semester, etc
     client: { type: ObjectId, ref: 'client' },
     school: { type: ObjectId, ref: 'school' },
     createdBy: { type: ObjectId, ref: 'user' },

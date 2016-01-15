@@ -85,7 +85,7 @@ export interface AquiredProgram extends BaseDto {
   totalCost?: number;
   numberWeeks?: number;
   percentageComm?: number;
-  period?: any;
+  frequency?: any;
   client?: any;
   school?: any;
 }
