@@ -1,5 +1,4 @@
 import { MainController } from './components/main/main';
-import './components/contacts/contacts';
 import { mainNavbar } from './components/navbar/navbar.directive';
 import './components/signup/signup';
 import './components/signup/signup.service';
@@ -8,10 +7,11 @@ import './components/login/login.service';
 import './components/helper/helper';
 import './components/helper/progressBar';
 import './components/auth/auth.service';
-import './components/institution/institution';
-import './components/student/student';
-import './components/frequency/frequency';
-import './components/coe/coe';
+import './components/payment_types/payment_types';
+import './components/institutions/institutions';
+import './components/students/students';
+import './components/frequencies/frequencies';
+import './components/coes/coes';
 
 declare var moment: moment.MomentStatic;
 
@@ -90,17 +90,16 @@ namespace app {
     'ui.bootstrap',
     'toastr',
     'ngCookies',
-    'app.contacts',
     'app.auth',
     'app.signup',
     'app.login',
     'app.helper',
     'app.ui.helper',
-    'app.frequency',
-    'app.paymentType',
-    'app.coe',
-    'app.institution',
-    'app.student'
+    'app.frequencies',
+    'app.paymentTypes',
+    'app.coes',
+    'app.institutions',
+    'app.students'
   ])
     .config(config)
     .config(routerConfig)

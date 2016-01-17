@@ -1,6 +1,6 @@
-namespace frequency {
+namespace frequencies {
 
-	angular.module('app.frequency', [
+	angular.module('app.frequencies', [
 		'ui.router'
 	])
 	.config(config);
@@ -47,16 +47,16 @@ namespace frequency {
 				controller: ['$scope', '$state', '$stateParams', '$http',
 				function($scope: any, $state: any, $stateParams: any, $http: angular.IHttpService) {
 					
-					$http.get(`${url}/${$stateParams.frequencyId}`).then((resp) => {
-						$scope.frequency = resp.data['data'];
-					});
-					
-					const filters = {
-						frequency: $stateParams.frequencyId	
+					$scope.deleteFrencuency = function (data: any)  {
+						$http.delete(`${url}/${data.id}`).then((resp) => {
+							if (resp.data['success']) {
+								$state.go($state.current, {}, {reload: true});
+							}
+						}); 
 					};
 					
 					console.log("getting frequencies controller");
-					$http.get(`${url}/_find`, filters).then((resp) => {
+					$http.get(`${url}/_find`).then((resp) => {
 						$scope.frequencies = resp.data['data'];
 					});
 				}]

@@ -1,6 +1,6 @@
-namespace student {
+namespace institutions {
 
-	angular.module('app.student', [
+	angular.module('app.institutions', [
 		'ui.router'
 	])
 	.config(config);
@@ -8,113 +8,114 @@ namespace student {
 	/* @ngInject */
 	function config($stateProvider: any) {
 		
-		const url = '/api/student';
-		
+		const url = '/api/institution';
+					
 		$stateProvider
-			.state('students', {
+			.state('institutions', {
 				// With abstract set to true, that means this state can not be explicitly activated.
 				// It can only be implicitly activated by activating one of its children.
 				abstract: true,
-				// This abstract state will prepend '/students' onto the urls of all its children.
-				url: '/student', 
+				// This abstract state will prepend '/institutions' onto the urls of all its children.
+				url: '/institutions', 
 				// Example of loading a template from a file. This is also a top level state,
 				// so this template file will be loaded and then inserted into the ui-view
 				// within index.html.
-				templateUrl: 'components/students/students.html'
+				templateUrl: 'components/institutions/institutions.html'
 			})
 			
 			/////////////////////
-			//  > Students > List //
+			//  > Institutions > List //
 			/////////////////////
 		
 			// Using a '.' within a state name declares a child within a parent.
-			// So you have a new state 'list' within the parent 'students' state.
-			.state('students.list', {
+			// So you have a new state 'list' within the parent 'institutions' state.
+			.state('institutions.list', {
 		
 				// Using an empty url means that this child state will become active
 				// when its parent's url is navigated to. Urls of child states are
 				// automatically appended to the urls of their parent. So this state's
-				// url is '/students' (because '/students' + '').
+				// url is '/institutions' (because '/institutions' + '').
 				url: '',
 		
 				// IMPORTANT: Now we have a state that is not a top level state. Its
 				// template will be inserted into the ui-view within this state's
-				// parent's template; so the ui-view within students.html. This is the
+				// parent's template; so the ui-view within institutions.html. This is the
 				// most important thing to remember about templates.
-				templateUrl: 'components/students/students.list.html',
+				templateUrl: 'components/institutions/institutions.list.html',
 				
 				// You can pair a controller to your template. There *must* be a template to pair with.
 				controller: ['$scope', '$state', '$stateParams', '$http',
 				function($scope: any, $state: any, $stateParams: any, $http: angular.IHttpService) {
 					
-					$http.get(`${url}/${$stateParams.studentId}`).then((resp) => {
-						$scope.student = resp.data['data'];
-					});
-					
-					const filters = {
-						student: $stateParams.studentId	
+					$scope.deleteInstitution = function (data: any)  {
+						$http.delete(`${url}/${data.id}`).then((resp) => {
+							if (resp.data['success']) {
+								$state.go($state.current, {}, {reload: true});
+							}
+						}); 
 					};
 					
-					console.log("getting students controller");
-					$http.get(`${url}/_find`, filters).then((resp) => {
-						$scope.students = resp.data['data'];
+					console.log("getting institutions controller");
+					$http.get(`${url}/_find`).then((resp) => {
+						$scope.institutions = resp.data['data'];
 					});
 				}]
 			})
       
 			/////////////////////
-			//  > Studentss > Add/Modify //
+			//  > Institutionss > Add/Modify //
 			/////////////////////
 		  
 			// Using a '.' within a state name declares a child within a parent.
-			// So you have a new state 'list' within the parent 'students' state.
-			  .state('students.edit', {
+			// So you have a new state 'list' within the parent 'institutions' state.
+			  .state('institutions.edit', {
 				
 				// Using an empty url means that this child state will become active
 				// when its parent's url is navigated to. Urls of child states are
 				// automatically appended to the urls of their parent. So this state's
-				// url is '/students' (because '/students' + '').
-				url: '/:studentId',
+				// url is '/institutions' (because '/institutions' + '').
+				url: '/:institutionId',
 		  
 				// IMPORTANT: Now we have a state that is not a top level state. Its
 				// template will be inserted into the ui-view within this state's
-				// parent's template; so the ui-view within _pArents_students.html. This is the
+				// parent's template; so the ui-view within _pArents_institutions.html. This is the
 				// most important thing to remember about templates.
-				templateUrl: 'components/students/students.edit.html',
+				templateUrl: 'components/institutions/institutions.edit.html',
 				
 				// You can pair a controller to your template. There *must* be a template to pair with.
 				controller: ['$scope', '$state', '$stateParams', '$http',
 				  function($scope: any, $state: any, $stateParams: any, $http: angular.IHttpService) {
 					
 					console.log("params " + JSON.stringify($stateParams));
-		
-					$scope.editStudents = function (student: any)  {
-					  
-					  if (student._id) {           
-						$http.put(`${url}/${student._id}`, student).then((resp) => {
+					
+					$scope.editInstitutions = function (institution: any)  {	
+					  if (institution._id) {           
+						$http.put(`${url}/${institution._id}`, institution).then((resp) => {
 						  if (resp.data['success']) {
-							$state.go('students.list');
+							$state.go('institutions.list');
 						  }
 						});  
 					  } else {
-						$http.post(`${url}`, student).then((resp) => {
+						$http.post(`${url}`, institution).then((resp) => {
 						  if (resp.data['success']) {
-							$state.go('students.list');
+							$state.go('institutions.list');
 						  }
 						});
 					  }
 					};
 					  
-					if ($stateParams.studentId) {
-						$http.get(`${url}/${$stateParams.studentId}`).then((resp) => {
-							$scope.student = resp.data['data'];
-							/*$scope.student.startingDate = new Date($scope.student.startingDate);
-							$scope.student.endingDate = new Date($scope.student.endingDate);*/
+					if ($stateParams.institutionId) {
+						$http.get(`${url}/${$stateParams.institutionId}`).then((resp) => {
+							$scope.institution = resp.data['data'];
+							/*$scope.institution.startingDate = new Date($scope.institution.startingDate);
+							$scope.institution.endingDate = new Date($scope.institution.endingDate);*/
 						});
 					}
 					
 				}]
-			});
+			})
+			
+			;
 	}
 			
 }

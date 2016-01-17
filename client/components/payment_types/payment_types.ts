@@ -1,6 +1,6 @@
-namespace paymentType {
+namespace paymentTypes {
 
-	angular.module('app.paymentType', [
+	angular.module('app.paymentTypes', [
 		'ui.router'
 	])
 	.config(config);
@@ -47,16 +47,16 @@ namespace paymentType {
 				controller: ['$scope', '$state', '$stateParams', '$http',
 				function($scope: any, $state: any, $stateParams: any, $http: angular.IHttpService) {
 					
-					$http.get(`${url}/${$stateParams.paymentTypeId}`).then((resp) => {
-						$scope.paymentType = resp.data['data'];
-					});
-					
-					const filters = {
-						paymentType: $stateParams.paymentTypeId	
+					$scope.deletePaymentType = function (data: any)  {
+						$http.delete(`${url}/${data.id}`).then((resp) => {
+							if (resp.data['success']) {
+								$state.go($state.current, {}, {reload: true});
+							}
+						}); 
 					};
 					
 					console.log("getting paymentTypes controller");
-					$http.get(`${url}/_find`, filters).then((resp) => {
+					$http.get(`${url}/_find`).then((resp) => {
 						$scope.paymentTypes = resp.data['data'];
 					});
 				}]
@@ -85,11 +85,8 @@ namespace paymentType {
 				// You can pair a controller to your template. There *must* be a template to pair with.
 				controller: ['$scope', '$state', '$stateParams', '$http',
 				  function($scope: any, $state: any, $stateParams: any, $http: angular.IHttpService) {
-					
-					console.log("params " + JSON.stringify($stateParams));
-					
-					$scope.editPaymentTypes = function (paymentType: any)  {
-					  
+				
+					$scope.editPaymentTypes = function (paymentType: any)  {	  
 					  if (paymentType._id) {           
 						$http.put(`${url}/${paymentType._id}`, paymentType).then((resp) => {
 						  if (resp.data['success']) {
