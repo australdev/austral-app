@@ -32,60 +32,77 @@ const schemas = {
     createdAt: { type: Number },
     updatedAt: { type: Number }
   }),
-  school: new Schema({
-    name: { type: String, required: true, index: true, unique: true },
-    websiteUrl: { type: String }
-  }),
-  client: new Schema({
-    email: { type: String, required: true },
-    phone: { type: String },
-    name: { type: String, required: true }, 
-    createdBy: { type: ObjectId, ref: 'user' },
-    createdAt: { type: Number },
-    updatedAt: { type: Number }
-  }),
-  aquiredProgram: new Schema({
-    name: { type: String, required: true, unique: true },
-    idProgramClient: { type: String },
-    startingDate: { type: Date },
-    endingDate: { type: Date },
-    courseCost: { type: Number },
-    otherCost: { type: Number }, //Other fees
-    totalCost: { type: Number }, //Other fees + Cost
-    numberWeeks: { type: Number },
-    percentageComm: { type: Number }, //Percentage commision
-    frequency: { type: ObjectId, ref: 'frequency' }, // monthly, trimester, semester, etc
-    client: { type: ObjectId, ref: 'client' },
-    school: { type: ObjectId, ref: 'school' },
-    createdBy: { type: ObjectId, ref: 'user' },
-    createdAt: { type: Number },
-    updatedAt: { type: Number }  
-  }),
-  payment: new Schema({
-    expectedDate: {type: Date, required: true},
-    expectedValue: { type: Number, required: true},
-    paidValue: {type: Number},
-    paymentType: {type: ObjectId, required: true, ref: 'paymentType' }, //First payment, other payment
-    aquiredProgram: { type: ObjectId, ref: 'aquiredProgram', required: true },
-    createdBy: { type: ObjectId, ref: 'user' },
-    createdAt: { type: Number },
-    updatedAt: { type: Number }
-  }),
+  coe: new Schema({
+		student: { type: ObjectId, ref: 'student', required: true, index: true },
+		institution: { type: ObjectId, ref: 'institution', required: true, index: true },
+		courseCode: { type: String, required: true },
+		courseName: { type: String, required: true },
+		startDate: { type: Date, default: Date.now() },
+		endDate: { type: Date, default: Date.now() },
+		tuitionFee: { type: String, required: true },
+		createdBy: { type: ObjectId, ref: 'user' },
+		createdAt: { type: Number },
+		updatedAt: { type: Number }
+	}),
   frequency: new Schema({
-    code: { type: String, required: true },
-    name: { type: String, required: true },
-    valueInMonths: { type: Number, required: true },
-    createdBy: { type: ObjectId, ref: 'user' },
-    createdAt: { type: Number },
-    updatedAt: { type: Number }
-  }),
-  paymentType: new Schema({
-    code: { type: String, required: true },
-    name: { type: String, required: true },
-    createdBy: { type: ObjectId, ref: 'user' },
-    createdAt: { type: Number },
-    updatedAt: { type: Number }
-  }) 
+		code: { type: String, required: true },
+		description: { type: String, required: true },
+		periodicity: { type: String, required: true },
+		minPeriod: { type: String, required: true },
+		createdBy: { type: ObjectId, ref: 'user' },
+		createdAt: { type: Number },
+		updatedAt: { type: Number }
+	}),
+	student: new Schema({
+		institutionCode: { type: String, required: true },
+		name: { type: String, required: true },
+		email: { type: String, required: true },
+		createdBy: { type: ObjectId, ref: 'user' },
+		createdAt: { type: Number },
+		updatedAt: { type: Number }
+	}),
+	payment: new Schema({
+		studyPeriod: { type: ObjectId, ref: 'studyPeriod', required: true, index: true },
+		paymentType: { type: ObjectId, ref: 'paymentType', required: true, index: true },
+		description: { type: String, required: true },
+		expectedDate: { type: Date, default: Date.now() },
+		expectedValue: { type: String, required: true },
+		commPerc: { type: String, required: true },
+		paymentGts: { type: String, required: true },
+		receivedDate: { type: Date, default: Date.now() },
+		receivedValue: { type: String, required: true },
+		createdBy: { type: ObjectId, ref: 'user' },
+		createdAt: { type: Number },
+		updatedAt: { type: Number }
+	}),
+	institution: new Schema({
+		name: { type: String, required: true },
+		code: { type: String, required: true },
+		createdBy: { type: ObjectId, ref: 'user' },
+		createdAt: { type: Number },
+		updatedAt: { type: Number }
+	}),
+	paymentType: new Schema({
+		code: { type: String, required: true },
+		name: { type: String, required: true },
+		description: { type: String, required: true },
+		createdBy: { type: ObjectId, ref: 'user' },
+		createdAt: { type: Number },
+		updatedAt: { type: Number }
+	}),
+	studyPeriod: new Schema({
+		coe: { type: ObjectId, ref: 'coe', required: true, index: true },
+		description: { type: String, required: true },
+		startDate: { type: Date, default: Date.now() },
+		endDate: { type: Date, default: Date.now() },
+		periodFee: { type: String, required: true },
+		commPerc: { type: String, required: true },
+		periodGts: { type: String, required: true },
+		frequency: { type: String, required: true },
+		createdBy: { type: ObjectId, ref: 'user' },
+		createdAt: { type: Number },
+		updatedAt: { type: Number }
+	})
 };
 
 
@@ -104,12 +121,13 @@ for (let prop in schemas) {
 
 
 export const UserModel = db.model('user', schemas.user);
-export const SchoolModel = db.model('school', schemas.school);
-export const ClientModel = db.model('client', schemas.client);
-export const AquiredProgramModel = db.model('aquiredProgram', schemas.aquiredProgram);
-export const PaymentModel = db.model('payment', schemas.payment);
-export const PaymentTypeModel = db.model('paymentType', schemas.paymentType);
+export const CoeModel = db.model('coe', schemas.coe);
 export const FrequencyModel = db.model('frequency', schemas.frequency);
+export const StudentModel = db.model('student', schemas.student);
+export const PaymentModel = db.model('payment', schemas.payment);
+export const InstitutionModel = db.model('institution', schemas.institution);
+export const PaymentTypeModel = db.model('paymentType', schemas.paymentType);
+export const StudyPeriodModel = db.model('studyPeriod', schemas.studyPeriod);
 
 
 schemas.user.pre('save', function (next: Function) {

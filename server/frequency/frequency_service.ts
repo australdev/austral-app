@@ -1,14 +1,18 @@
-﻿import {Frequency} from '../../client/core/dto';
+﻿import {Frequency, ModelOptions} from '../../client/core/dto';
 import {FrequencyModel} from '../core/model';
 import {BaseService} from '../core/base_service';
 
 export class FrequencyService extends BaseService<Frequency> {
 
 	constructor() {
-		super(FrequencyModel);
+		const defaultModelOptions: ModelOptions = {
+			population: 'school client frequency'
+		};
+		super(FrequencyModel, defaultModelOptions);
 	}
 
 }
 
 export const frequencyService = new FrequencyService();
+
 

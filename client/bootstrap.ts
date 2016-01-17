@@ -8,11 +8,10 @@ import './components/login/login.service';
 import './components/helper/helper';
 import './components/helper/progressBar';
 import './components/auth/auth.service';
-import './components/schools/schools';
-import './components/schools/schools.service';
-import './components/aquired_programs/aquired_programs';
-import './components/clients/clients';
-import './components/clients/clients.service';
+import './components/institution/institution';
+import './components/student/student';
+import './components/frequency/frequency';
+import './components/coe/coe';
 
 declare var moment: moment.MomentStatic;
 
@@ -97,9 +96,11 @@ namespace app {
     'app.login',
     'app.helper',
     'app.ui.helper',
-    'app.schools',
-    'app.aquiredPrograms',
-    'app.clients',
+    'app.frequency',
+    'app.paymentType',
+    'app.coe',
+    'app.institution',
+    'app.student'
   ])
     .config(config)
     .config(routerConfig)

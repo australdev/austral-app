@@ -25,6 +25,12 @@ export interface SignUp extends BaseDto {
   user?: User;
 }
 
+export interface LogIn extends BaseDto {
+  username?: string;
+  password?: string;
+}
+
+
 export interface User extends BaseDto {
   email?: string;
   password?: string;
@@ -38,11 +44,6 @@ export interface User extends BaseDto {
   verified?: number; 
   status?: number;
   lastLoginDate?: Date; 
-}
-
-export interface LogIn extends BaseDto {
-  username?: string;
-  password?: string;
 }
 
 export interface AuthenticationResponse {
@@ -64,48 +65,74 @@ export interface ModelOptions {
   specialAuthorizationDataSearch?: boolean;
 }
 
-export interface Client extends BaseDto {
-  email?: string;
-  name?: string;
-  phone?: string;
-}
+export interface Coe extends BaseDto {
 
-export interface School extends BaseDto {
-  name?: string;
-  websiteUrl?: string;
-}
+  student?: any;
+  institution?: any;
+  courseCode?: string;
+  courseName?: string;
+  startDate?: Date;
+  endDate?: Date;
+  tuitionFee?: string;
 
-export interface AquiredProgram extends BaseDto {
-  name?: string;
-  idProgramClient?: string;
-  startingDate?: Date;
-  endingDate?: Date;
-  courseCost?: number;
-  otherCost?: number;
-  totalCost?: number;
-  numberWeeks?: number;
-  percentageComm?: number;
-  frequency?: any;
-  client?: any;
-  school?: any;
-}
-
-export interface Payment extends BaseDto {
-  expectedDate?: Date;
-  expectedValue?: number;
-  paidValue?: number;
-  paymentType?: any;
-  aquiredProgram?: any;
 }
 
 export interface Frequency extends BaseDto {
+
+  code?: string;
+  description?: string;
+  periodicity?: string;
+  minPeriod?: string;
+
+}
+
+export interface Student extends BaseDto {
+
+  institutionCode?: string;
+  name?: string;
+  email?: string;
+
+}
+
+export interface Institution extends BaseDto {
+
   name?: string;
   code?: string;
-  valueInMonths?: string;
+
 }
 
 export interface PaymentType extends BaseDto {
-  name?: string;
+
   code?: string;
+  name?: string;
+  description?: string;
+
+}
+
+export interface Payment extends BaseDto {
+
+  studyPeriod: any;
+  paymentType?: any;
+  description?: string;
+  expectedDate?: Date;
+  expectedValue?: string;
+  commPerc?: string;
+  paymentGts?: string;
+  receivedDate?: Date;
+  receivedValue?: string;
+
+}
+
+export interface StudyPeriod extends BaseDto {
+
+  coe: any;
+  description?: string;
+  startDate?: Date;
+  endDate?: Date;
+  periodFee?: string;
+  commPerc?: string;
+  periodGts?: string;
+  frequency?: any;
+
 }
 
