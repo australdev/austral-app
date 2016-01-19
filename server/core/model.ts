@@ -36,10 +36,10 @@ const schemas = {
 		student: { type: ObjectId, ref: 'student', required: true, index: true },
 		institution: { type: ObjectId, ref: 'institution', required: true, index: true },
 		courseType: { type: ObjectId, ref: 'courseType', required: true, index: true },
-		courseCode: { type: String, required: true },
+		courseCode: { type: String },
 		courseName: { type: String, required: true },
-		startDate: { type: Date, default: Date.now() },
-		endDate: { type: Date, default: Date.now() },
+		startDate: { type: Date, default: new Date(), required: true },
+		endDate: { type: Date, default: new Date(), required: true },
 		tuitionFee: { type: String, required: true },
 		createdBy: { type: ObjectId, ref: 'user' },
 		createdAt: { type: Number },
@@ -65,14 +65,16 @@ const schemas = {
 	payment: new Schema({
 		studyPeriod: { type: ObjectId, ref: 'studyPeriod', required: true, index: true },
 		paymentType: { type: ObjectId, ref: 'paymentType', required: true, index: true },
-		description: { type: String, required: true },
-		expectedDate: { type: Date, default: Date.now() },
-		expectedValue: { type: String, required: true },
-		commPerc: { type: String, required: true },
-		paymentGts: { type: String, required: true },
-		frequency: { type: String, required: true },
-		receivedDate: { type: Date, default: Date.now() },
-		receivedValue: { type: String, required: true },
+		description: { type: String },
+		expectedDate: { type: Date, default: new Date(), required: true },
+		expectedValue: { type: Number, required: true },
+		commPerc: { type: Number, required: true },
+		paymentGts: { type: Number, required: true },
+		frequency: { type: String },
+		coursePayment: { type: Number, required: true },
+		expectedComm: { type: Number, required: true },
+		receivedDate: { type: Date, default: new Date() },
+		receivedValue: { type: Number },
 		createdBy: { type: ObjectId, ref: 'user' },
 		createdAt: { type: Number },
 		updatedAt: { type: Number }
@@ -94,12 +96,13 @@ const schemas = {
 	}),
 	studyPeriod: new Schema({
 		coe: { type: ObjectId, ref: 'coe', required: true, index: true },
-		description: { type: String, required: true },
-		startDate: { type: Date, default: Date.now() },
-		endDate: { type: Date, default: Date.now() },
-		periodFee: { type: String, required: true },
-		commPerc: { type: String, required: true },
-		periodGts: { type: String, required: true },
+		description: { type: String },
+		startDate: { type: Date, default: new Date() },
+		endDate: { type: Date, default: new Date() },
+		periodFee: { type: Number, required: true },
+		commPerc: { type: Number, required: true },
+		expectedComm: { type: Number, required: true },
+		periodGts: { type: Number, required: true },
 		frequency: { type: ObjectId, ref: 'frequency', required: true },
 		createdBy: { type: ObjectId, ref: 'user' },
 		createdAt: { type: Number },
@@ -120,7 +123,7 @@ for (let prop in schemas) {
   const schem: Schema = schemas[prop];
   schem.pre('save', function(next: Function) {
     const obj: Document = this;
-    const now = Date.now();
+    const now = new Date();
     if (obj.isNew) {
       obj['createdAt'] = now;
     }

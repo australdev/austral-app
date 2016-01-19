@@ -1,3 +1,5 @@
+import {StudyPeriod, Payment} from '../../core/dto';
+
 namespace coes {
 
 	angular.module('app.coes', [
@@ -28,7 +30,11 @@ namespace coes {
 				// Example of loading a template from a file. This is also a top level state,
 				// so this template file will be loaded and then inserted into the ui-view
 				// within index.html.
-				templateUrl: 'components/coes/coes.html'
+				templateUrl: 'components/coes/coes.html',
+				controller: ['$scope', '$state', '$stateParams', '$http',
+					function($scope: any, $state: any, $stateParams: any, $http: angular.IHttpService) {
+						$scope.texts = {};
+					}]
 			})
 			
 			/////////////////////
@@ -54,6 +60,8 @@ namespace coes {
 				// You can pair a controller to your template. There *must* be a template to pair with.
 				controller: ['$scope', '$state', '$stateParams', '$http',
 				function($scope: any, $state: any, $stateParams: any, $http: angular.IHttpService) {
+					
+					$scope.texts.title = "Coe";
 					
 					$scope.deleteCoe = function (data: any)  {
 						$http.delete(`${url}/${data.id}`).then((resp) => {
@@ -92,6 +100,8 @@ namespace coes {
 				// You can pair a controller to your template. There *must* be a template to pair with.
 				controller: ['$scope', '$state', '$stateParams', '$http',
 				  function($scope: any, $state: any, $stateParams: any, $http: angular.IHttpService) {
+					
+					$scope.texts.title = "Coe";
 					
 					$http.get(`${url_student}/_find`).then((resp: any) => {
 					  $scope.students = resp.data['data'];
@@ -169,6 +179,8 @@ namespace coes {
 				controller: ['$scope', '$state', '$stateParams', '$http',
 				function($scope: any, $state: any, $stateParams: any, $http: angular.IHttpService) {
 					
+					$scope.texts.title = "Coe - Study Period";
+					
 					$http.get(`${url}/${$stateParams.coeId}`).then((resp) => {
 						$scope.coe = resp.data['data'];
 					});
@@ -214,6 +226,8 @@ namespace coes {
 				controller: ['$scope', '$state', '$stateParams', '$http',
 				  function($scope: any, $state: any, $stateParams: any, $http: angular.IHttpService) {
 					
+					$scope.texts.title = "Coe - Study Period";
+					
 					$http.get(`${url_frequency}/_find`).then((resp) => {
 						$scope.frequencies = resp.data['data'];
 					});
@@ -221,7 +235,6 @@ namespace coes {
 					$scope.editStudyPeriod = function (studyPeriod: any, coe: any)  {
 					  	//const studyPeriod = $scope.studyPeriod;
 						  
-						console.log("coe " + JSON.stringify(coe));
 						const filters = {
 							coeId: coe._id	
 						};
@@ -301,9 +314,23 @@ namespace coes {
 				controller: ['$scope', '$state', '$stateParams', '$http',
 				function($scope: any, $state: any, $stateParams: any, $http: angular.IHttpService) {
 					
+					$scope.texts.title = "Coe - Study Period - Payment";
+					
 					$http.get(`${url_studyPeriod}/${$stateParams.studyPeriodId}`).then((resp) => {
 						$scope.studyPeriod = resp.data['data'];
 					});
+					
+					$scope.isOverdue = function (payment: Payment)  {
+						if (payment && payment.expectedDate) {
+							const currentDate = new Date();
+							const expDate = new Date(payment.expectedDate.toString());
+							if ((!payment.receivedValue || payment.receivedValue < payment.expectedValue) && 
+								(currentDate > expDate)) {
+								return true;
+							}
+						}
+						return false;
+					};
 					
 					$scope.deletePayment = function (data: any)  {
 						$http.delete(`${url_payment}/${data.id}`).then((resp) => {
@@ -343,6 +370,8 @@ namespace coes {
 				controller: ['$scope', '$state', '$stateParams', '$http',
 				  function($scope: any, $state: any, $stateParams: any, $http: angular.IHttpService) {
 					
+					$scope.texts.title = "Coe - Study Period - Payment";
+					
 					$http.get(`${url_paymentType}/_find`).then((resp: any) => {
 					  $scope.paymentTypes = resp.data['data'];
 					});
@@ -372,9 +401,34 @@ namespace coes {
 						}
 					};
 					
+					$scope.calcComm = function ()  {
+						const payment: Payment = $scope.payment;
+						
+						if (payment && payment.commPerc && payment.coursePayment) {
+							payment.expectedComm = payment.coursePayment * payment.commPerc / 100;
+							payment.paymentGts = payment.expectedComm / 10;
+							payment.expectedValue = payment.expectedComm + payment.paymentGts;
+						}
+					};
+					
+					$scope.receivedDateChange = function ()  {
+						const payment: Payment = $scope.payment;
+						if (payment && !payment.expectedDate && payment.receivedDate) {
+							payment.expectedDate = payment.receivedDate;
+						}
+					};
+					
+					$scope.receivedValueChange = function ()  {
+						const payment: Payment = $scope.payment;
+						if (payment && !payment.expectedValue && payment.receivedValue) {
+							payment.expectedValue = payment.receivedValue;
+						}
+					};
+					
 					if ($stateParams.studyPeriodId) {
 						$http.get(`${url_studyPeriod}/${$stateParams.studyPeriodId}`).then((resp) => {
 							$scope.studyPeriod = resp.data['data'];
+							// Data initialization based on parent's
 							$scope.payment = {
 								frequency: $scope.studyPeriod.frequency.description,
 								commPerc: $scope.studyPeriod.commPerc
@@ -386,7 +440,9 @@ namespace coes {
 						$http.get(`${url_payment}/${$stateParams.paymentId}`).then((resp) => {
 							$scope.payment = resp.data['data'];
 							$scope.payment.expectedDate = new Date($scope.payment.expectedDate);
-							$scope.payment.receivedDate = new Date($scope.payment.receivedDate);
+							if ($scope.payment.receivedDate) {
+								$scope.payment.receivedDate = new Date($scope.payment.receivedDate);
+							}
 						});
 					}
 				}]

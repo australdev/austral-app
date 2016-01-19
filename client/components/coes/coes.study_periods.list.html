@@ -14,9 +14,10 @@
       <tr>
         <th>Description</th>
         <th>Start Date</th>
-        <th>End date</th>
+        <th>End Date</th>
         <th>Period Fee</th>
         <th>Comm(%)</th>
+        <th>Comm($)</th>
         <th>GTS</th>
         <th>Frequency</th>
 	  </tr>
@@ -28,6 +29,7 @@
           <td>{{ studyPeriod.endDate | date:'dd-MM-yyyy' }}</td>
           <td>{{ studyPeriod.periodFee }}</td>
           <td>{{ studyPeriod.commPerc }}</td>
+          <td>{{ studyPeriod.expectedComm }}</td>
           <td>{{ studyPeriod.periodGts }}</td>
           <td>{{ studyPeriod.frequency.description }}</td>
           <td>
@@ -52,8 +54,6 @@
       </tr>
     </tbody>
   </table>
-</ul>
-<ul>
   <a ui-sref="coes.list({coeId:coe._id})">
     <button class="btn btn-default">
       <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>

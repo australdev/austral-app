@@ -15,10 +15,10 @@
       <ul class="nav navbar-nav">
         <li ng-class="{active: $state.includes('paymentTypes')}"><a ui-sref="paymentTypes.list">Payment Types</a></li>
         <li ng-class="{active: $state.includes('frequencies')}"><a ui-sref="frequencies.list">Frequencies</a></li>
-        <li ng-class="{active: $state.includes('students')}"><a ui-sref="students.list">Students</a></li>
+        <li ng-class="{active: $state.includes('app.students')}"><a ui-sref="students.list">Students</a></li>
         <li ng-class="{active: $state.includes('paymentTypes')}"><a ui-sref="courseTypes.list">Course Types</a></li>
         <li ng-class="{active: $state.includes('institutions')}"><a ui-sref="institutions.list">Institutions</a></li>
-        <li ng-class="{active: $state.includes('coes')}"><a ui-sref="coes.list">Coes</a></li>
+        <li ng-class="{active: $state.includes('coes,coes.studyPeriods,coes.studyPeriods.payments')}"><a ui-sref="coes.list">Coes</a></li>
       </ul>
     </div>
 </nav>

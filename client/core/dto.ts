@@ -114,12 +114,15 @@ export interface Payment extends BaseDto {
   studyPeriod: any;
   paymentType?: any;
   description?: string;
+  coursePayment?: number;
   expectedDate?: Date;
-  expectedValue?: string;
-  commPerc?: string;
-  paymentGts?: string;
+  expectedValue?: number;
+  commPerc?: number;
+  paymentGts?: number;
   receivedDate?: Date;
-  receivedValue?: string;
+  receivedValue?: number;
+  frequency?: string;
+  expectedComm?: number;
 
 }
 
@@ -133,6 +136,7 @@ export interface StudyPeriod extends BaseDto {
   commPerc?: string;
   periodGts?: string;
   frequency?: any;
+  expectedComm?: number;
 
 }
 
