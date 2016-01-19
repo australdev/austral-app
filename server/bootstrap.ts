@@ -17,6 +17,7 @@ import * as institutionRouter from './institution/institution_router';
 import * as studyPeriodRouter from './study_period/study_period_router';
 import * as studentRouter from './student/student_router';
 import * as frequencyRouter from './frequency/frequency_router';
+import * as courseTypeRouter from './course_type/course_type_router';
 
 const INDEX_DEST_PATH = resolve(PATH.cwd, PATH.dest.app.base, 'index.html');
 
@@ -42,6 +43,7 @@ server.use('/api/institution', institutionRouter);
 server.use('/api/study-period', studyPeriodRouter);
 server.use('/api/student', studentRouter);
 server.use('/api/frequency', frequencyRouter);
+server.use('/api/course-type', courseTypeRouter);
 
 server.all(APP_BASE + '*', (req, res) =>
   res.sendFile(INDEX_DEST_PATH)

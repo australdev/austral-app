@@ -7,7 +7,7 @@
 			<!--form-group-->
        <div class="form-group">
         <div class="col-md-5 control-label">
-          <label for="student" class="margin-b-n"><strong class="text-danger">*</strong> student</label>
+          <label for="student" class="margin-b-n"><strong class="text-danger">*</strong> Student</label>
         </div>
         <div class="col-md-7">
           
@@ -31,9 +31,22 @@
         </div>
         
         <!--form-group-->
+       <div class="form-group">
+        <div class="col-md-5 control-label">
+          <label for="courseType" class="margin-b-n"><strong class="text-danger">*</strong> Course Type</label>
+        </div>
+        <div class="col-md-7">
+          
+        <select class="form-control" id="courseType" name="courseType" required ng-options="courseType._id as courseType.name for courseType in courseTypes" ng-model="coe.courseType._id" >
+          <option></option>
+        </select>
+              </div>
+       </div>
+        
+        <!--form-group-->
         <div class="form-group">
           <div class="col-md-5 control-label">
-            <label for="courseCode" class="margin-b-n"><strong class="text-danger">*</strong> code</label>
+            <label for="courseCode" class="margin-b-n"><strong class="text-danger">*</strong> Student Code</label>
             <!--<i class="fa fa-spinner pull-right fa-lg fa-spin" ng-show="checkingcourseCode"></i>
             <i class="fa fa-check pull-right fa-lg" ng-show="availablecourseCode"></i>-->
           </div>
@@ -45,7 +58,7 @@
         <!--form-group-->
         <div class="form-group">
           <div class="col-md-5 control-label">
-            <label for="courseName" class="margin-b-n"><strong class="text-danger">*</strong> Name</label>
+            <label for="courseName" class="margin-b-n"><strong class="text-danger">*</strong> Program Name</label>
             <!--<i class="fa fa-spinner pull-right fa-lg fa-spin" ng-show="checkingcourseName"></i>
             <i class="fa fa-check pull-right fa-lg" ng-show="availablecourseName"></i>-->
           </div>

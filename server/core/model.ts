@@ -35,6 +35,7 @@ const schemas = {
   coe: new Schema({
 		student: { type: ObjectId, ref: 'student', required: true, index: true },
 		institution: { type: ObjectId, ref: 'institution', required: true, index: true },
+		courseType: { type: ObjectId, ref: 'courseType', required: true, index: true },
 		courseCode: { type: String, required: true },
 		courseName: { type: String, required: true },
 		startDate: { type: Date, default: Date.now() },
@@ -69,6 +70,7 @@ const schemas = {
 		expectedValue: { type: String, required: true },
 		commPerc: { type: String, required: true },
 		paymentGts: { type: String, required: true },
+		frequency: { type: String, required: true },
 		receivedDate: { type: Date, default: Date.now() },
 		receivedValue: { type: String, required: true },
 		createdBy: { type: ObjectId, ref: 'user' },
@@ -98,7 +100,15 @@ const schemas = {
 		periodFee: { type: String, required: true },
 		commPerc: { type: String, required: true },
 		periodGts: { type: String, required: true },
-		frequency: { type: String, required: true },
+		frequency: { type: ObjectId, ref: 'frequency', required: true },
+		createdBy: { type: ObjectId, ref: 'user' },
+		createdAt: { type: Number },
+		updatedAt: { type: Number }
+	}),
+	courseType: new Schema({
+		code: { type: String, required: true },
+		name: { type: String, required: true },
+		description: { type: String, required: true },
 		createdBy: { type: ObjectId, ref: 'user' },
 		createdAt: { type: Number },
 		updatedAt: { type: Number }
@@ -128,6 +138,7 @@ export const PaymentModel = db.model('payment', schemas.payment);
 export const InstitutionModel = db.model('institution', schemas.institution);
 export const PaymentTypeModel = db.model('paymentType', schemas.paymentType);
 export const StudyPeriodModel = db.model('studyPeriod', schemas.studyPeriod);
+export const CourseTypeModel = db.model('courseType', schemas.courseType);
 
 
 schemas.user.pre('save', function (next: Function) {

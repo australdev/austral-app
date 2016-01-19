@@ -1,6 +1,4 @@
 <ul>     
-  
-  
   <a ui-sref="paymentTypes.edit({paymentTypeId:paymentType._id})">
     <button class="btn btn-default">
       <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
@@ -9,20 +7,18 @@
   <table class="table table-striped table-hover">
     <thead>
       <tr>
-                <th>code</th>
+        <th>code</th>
         <th>Name</th>
         <th>Description</th>
-      
 	  </tr>
     </thead>
     <tbody>
       <tr ng-repeat="paymentType in paymentTypes" >
           <td>{{ paymentType.code }}</td>
-<td>{{ paymentType.name }}</td>
-<td>{{ paymentType.description }}</td>
-		  
+          <td>{{ paymentType.name }}</td>
+          <td>{{ paymentType.description }}</td>
           <td>
-            <button ng-click="deletePaymentType(paymentType})" class="btn btn-default">
+            <button ng-click="deletePaymentType(paymentType)" class="btn btn-default">
               <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
             </button>
           </td>

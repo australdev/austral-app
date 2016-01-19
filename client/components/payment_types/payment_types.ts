@@ -48,14 +48,13 @@ namespace paymentTypes {
 				function($scope: any, $state: any, $stateParams: any, $http: angular.IHttpService) {
 					
 					$scope.deletePaymentType = function (data: any)  {
-						$http.delete(`${url}/${data.id}`).then((resp) => {
+						$http.delete(`${url}/${data._id}`).then((resp) => {
 							if (resp.data['success']) {
 								$state.go($state.current, {}, {reload: true});
 							}
 						}); 
 					};
 					
-					console.log("getting paymentTypes controller");
 					$http.get(`${url}/_find`).then((resp) => {
 						$scope.paymentTypes = resp.data['data'];
 					});
@@ -86,7 +85,7 @@ namespace paymentTypes {
 				controller: ['$scope', '$state', '$stateParams', '$http',
 				  function($scope: any, $state: any, $stateParams: any, $http: angular.IHttpService) {
 				
-					$scope.editPaymentTypes = function (paymentType: any)  {	  
+					$scope.editPaymentType = function (paymentType: any)  {	  
 					  if (paymentType._id) {           
 						$http.put(`${url}/${paymentType._id}`, paymentType).then((resp) => {
 						  if (resp.data['success']) {
@@ -105,8 +104,6 @@ namespace paymentTypes {
 					if ($stateParams.paymentTypeId) {
 						$http.get(`${url}/${$stateParams.paymentTypeId}`).then((resp) => {
 							$scope.paymentType = resp.data['data'];
-							/*$scope.paymentType.startingDate = new Date($scope.paymentType.startingDate);
-							$scope.paymentType.endingDate = new Date($scope.paymentType.endingDate);*/
 						});
 					}
 					

@@ -1,13 +1,17 @@
-<h2>Payment</h2>
 <ul>
+  <a ui-sref="coes.studyPeriods.list({studyPeriodId:studyPeriod._id, coeId:studyPeriod.coe._id})">
+    <button class="btn btn-default">
+      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+    </button> 
+  </a>
 	<div class="container container-small">
 		<div ui-view class="slide">
-			<form class="form-horizontal" layout="column" ng-submit="editPayment(payment, )">
+			<form class="form-horizontal" layout="column" ng-submit="editPayment(payment, studyPeriod)">
       
 			<!--form-group-->
        <div class="form-group">
         <div class="col-md-5 control-label">
-          <label for="paymentType" class="margin-b-n"><strong class="text-danger">*</strong> paymentType</label>
+          <label for="paymentType" class="margin-b-n"><strong class="text-danger">*</strong> Payment Type</label>
         </div>
         <div class="col-md-7">
           
@@ -50,10 +54,23 @@
           <input type="text" class="form-control" id="expectedValue" name="expectedValue" ng-model="payment.expectedValue" required>
         </div>
         </div>
+        
         <!--form-group-->
         <div class="form-group">
         <div class="col-md-5 control-label">
-          <label for="commPerc" class="margin-b-n"><strong class="text-danger">*</strong> billed comm(%)</label>
+          <label for="frequency" class="margin-b-n"><strong class="text-danger">*</strong> Frequency</label>
+          <!--<i class="fa fa-spinner pull-right fa-lg fa-spin" ng-show="checkingfrequency"></i>
+          <i class="fa fa-check pull-right fa-lg" ng-show="availablefrequency"></i>-->
+        </div>
+        <div class="col-md-7">
+          <input type="text" class="form-control" id="frequency" name="frequency" ng-model="payment.frequency" required>
+        </div>
+        </div>
+        
+        <!--form-group-->
+        <div class="form-group">
+        <div class="col-md-5 control-label">
+          <label for="commPerc" class="margin-b-n"><strong class="text-danger">*</strong> Billed Comm(%)</label>
           <!--<i class="fa fa-spinner pull-right fa-lg fa-spin" ng-show="checkingcommPerc"></i>
           <i class="fa fa-check pull-right fa-lg" ng-show="availablecommPerc"></i>-->
         </div>
@@ -87,12 +104,12 @@
         <!--form-group-->
         <div class="form-group">
         <div class="col-md-5 control-label">
-          <label for="receivedValue" class="margin-b-n"><strong class="text-danger">*</strong> Received value</label>
+          <label for="receivedValue" class="margin-b-n"><strong class="text-danger"></strong> Received value</label>
           <!--<i class="fa fa-spinner pull-right fa-lg fa-spin" ng-show="checkingreceivedValue"></i>
           <i class="fa fa-check pull-right fa-lg" ng-show="availablereceivedValue"></i>-->
         </div>
         <div class="col-md-7">
-          <input type="text" class="form-control" id="receivedValue" name="receivedValue" ng-model="payment.receivedValue" required>
+          <input type="text" class="form-control" id="receivedValue" name="receivedValue" ng-model="payment.receivedValue" >
         </div>
         </div>
 			
@@ -100,4 +117,11 @@
 			</form>
 		</div>
 	</div>
+</ul>
+<ul>
+  <a ui-sref="coes.studyPeriods.list({studyPeriodId:studyPeriod._id, coeId:studyPeriod.coe._id})">
+    <button class="btn btn-default">
+      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+    </button> 
+  </a>
 </ul>

@@ -1,8 +1,8 @@
-<h2>PaymentType</h2>
+<h2>CourseType</h2>
 <ul>
 	<div class="container container-small">
 		<div ui-view class="slide">
-			<form class="form-horizontal" layout="column" ng-submit="editPaymentType(paymentType)">
+			<form class="form-horizontal" layout="column" ng-submit="editCourseType(courseType)">
       
 			  <!--form-group-->
         <div class="form-group">
@@ -12,7 +12,7 @@
             <i class="fa fa-check pull-right fa-lg" ng-show="availablecode"></i>-->
           </div>
           <div class="col-md-7">
-            <input type="text" class="form-control" id="code" name="code" ng-model="paymentType.code" required>
+            <input type="text" class="form-control" id="code" name="code" ng-model="courseType.code" required>
           </div>
         </div>
         <!--form-group-->
@@ -23,7 +23,7 @@
             <i class="fa fa-check pull-right fa-lg" ng-show="availablename"></i>-->
           </div>
           <div class="col-md-7">
-            <input type="text" class="form-control" id="name" name="name" ng-model="paymentType.name" required>
+            <input type="text" class="form-control" id="name" name="name" ng-model="courseType.name" required>
           </div>
         </div>
         <!--form-group-->
@@ -34,7 +34,7 @@
             <i class="fa fa-check pull-right fa-lg" ng-show="availabledescription"></i>-->
           </div>
           <div class="col-md-7">
-            <input type="text" class="form-control" id="description" name="description" ng-model="paymentType.description" required>
+            <input type="text" class="form-control" id="description" name="description" ng-model="courseType.description" required>
           </div>
         </div>
 			

@@ -6,7 +6,7 @@ export class InstitutionService extends BaseService<Institution> {
 
 	constructor() {
 		const defaultModelOptions: ModelOptions = {
-			population: 'school client frequency'
+			population: ''
 		};
 		super(InstitutionModel, defaultModelOptions);
 	}

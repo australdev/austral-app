@@ -48,7 +48,7 @@ namespace students {
 				function($scope: any, $state: any, $stateParams: any, $http: angular.IHttpService) {
 					
 					$scope.deleteStudent = function (data: any)  {
-						$http.delete(`${url}/${data.id}`).then((resp) => {
+						$http.delete(`${url}/${data._id}`).then((resp) => {
 							if (resp.data['success']) {
 								$state.go($state.current, {}, {reload: true});
 							}
@@ -85,10 +85,7 @@ namespace students {
 				controller: ['$scope', '$state', '$stateParams', '$http',
 				  function($scope: any, $state: any, $stateParams: any, $http: angular.IHttpService) {
 					
-					console.log("params " + JSON.stringify($stateParams));
-		
 					$scope.editStudent = function (student: any)  {
-		
 						if (student._id) {           
 							$http.put(`${url}/${student._id}`, student).then((resp) => {
 								if (resp.data['success']) {

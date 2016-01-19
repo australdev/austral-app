@@ -13,6 +13,7 @@ namespace coes {
 		const url_frequency = '/api/frequency';
 		const url_payment = '/api/payment';
 		const url_paymentType = '/api/payment-type';
+		const url_courseType = '/api/course-type';
 		const url_student = '/api/student';
 		const url_institution = '/api/institution';
 		
@@ -62,7 +63,6 @@ namespace coes {
 						}); 
 					};
 					
-					console.log("getting coes controller");
 					$http.get(`${url}/_find`).then((resp) => {
 						$scope.coes = resp.data['data'];
 					});
@@ -101,38 +101,44 @@ namespace coes {
 					  $scope.institutions = resp.data['data'];
 					});
 					
+					$http.get(`${url_courseType}/_find`).then((resp: any) => {
+					  $scope.courseTypes = resp.data['data'];
+					});
+					
 					$scope.editCoe = function (coe: any)  {
-					  if (coe._id) {           
-						$http.put(`${url}/${coe._id}`, coe).then((resp) => {
-						  if (resp.data['success']) {
-							$state.go('coes.list');
-						  }
-						});  
-					  } else {
-						$http.post(`${url}`, coe).then((resp) => {
-						  if (resp.data['success']) {
-							$state.go('coes.list');
-						  }
-						});
-					  }
+						if (coe._id) {           
+							$http.put(`${url}/${coe._id}`, coe).then((resp) => {
+								if (resp.data['success']) {
+									$state.go('coes.list');
+								}
+							});  
+						} else {
+							$http.post(`${url}`, coe).then((resp) => {
+								if (resp.data['success']) {
+									$state.go('coes.list');
+								}
+							});
+						}
 					};
 					  
 					if ($stateParams.coeId) {
 						$http.get(`${url}/${$stateParams.coeId}`).then((resp) => {
 							$scope.coe = resp.data['data'];
-							/*$scope.coe.startingDate = new Date($scope.coe.startingDate);
-							$scope.coe.endingDate = new Date($scope.coe.endingDate);*/
+							$scope.coe.startDate = new Date($scope.coe.startDate);
+							$scope.coe.endDate = new Date($scope.coe.endDate);
 						});
 					}
-					
 				}]
 			})
+			
+			
+			
 			.state('coes.studyPeriods', {
 				// With abstract set to true, that means this state can not be explicitly activated.
 				// It can only be implicitly activated by activating one of its children.
 				abstract: true,
 				// This abstract state will prepend '/studyPeriods' onto the urls of all its children.
-				url: '/study-periods', 
+				url: '/:coeId/study-periods', 
 				// Example of loading a template from a file. This is also a top level state,
 				// so this template file will be loaded and then inserted into the ui-view
 				// within index.html.
@@ -168,26 +174,24 @@ namespace coes {
 					});
 					
 					$scope.deleteStudyPeriod = function (data: any)  {
-						$http.delete(`${url}/${data.id}`).then((resp) => {
+						$http.delete(`${url_studyPeriod}/${data.id}`).then((resp) => {
 							if (resp.data['success']) {
-								$state.go($state.current, {}, {reload: true});
+								const filters = {
+									coe: $scope.coe._Id	
+								};
+								$state.go($state.current, filters, {reload: true});
 							}
 						}); 
 					};
 					
-					const filters = {
-						coe: $stateParams.coeId	
-					};
-					
-					console.log("getting studyPeriods controller");
-					$http.get(`${url_studyPeriod}/_find`, filters).then((resp) => {
+					$http.get(`${url_studyPeriod}/_find?coe=${$stateParams.coeId}`).then((resp) => {
 						$scope.studyPeriods = resp.data['data'];
 					});
 				}]
 			})
       
 			/////////////////////
-			// coes. > StudyPeriodss > Add/Modify //
+			// Coes > StudyPeriods > Add/Modify //
 			/////////////////////
 		  
 			// Using a '.' within a state name declares a child within a parent.
@@ -210,46 +214,47 @@ namespace coes {
 				controller: ['$scope', '$state', '$stateParams', '$http',
 				  function($scope: any, $state: any, $stateParams: any, $http: angular.IHttpService) {
 					
-					console.log("params " + JSON.stringify($stateParams));
-					
 					$http.get(`${url_frequency}/_find`).then((resp) => {
 						$scope.frequencies = resp.data['data'];
 					});
 					
-					$scope.editStudyPeriods = function (studyPeriod: any, coe: any)  {
-					  
-						if (studyPeriod.coe_id) {
-							studyPeriod['coe'] = coe._id;
+					$scope.editStudyPeriod = function (studyPeriod: any, coe: any)  {
+					  	//const studyPeriod = $scope.studyPeriod;
+						  
+						console.log("coe " + JSON.stringify(coe));
+						const filters = {
+							coeId: coe._id	
+						};
+						
+						if (studyPeriod._id) {           
+							$http.put(`${url_studyPeriod}/${studyPeriod._id}`, studyPeriod).then((resp) => {
+								if (resp.data['success']) {
+									$state.go('coes.studyPeriods.list', filters);
+								}
+							});  
+						} else {
+							if ($scope.coe._id) {
+								studyPeriod['coe'] = $scope.coe._id;
+							}
+							$http.post(`${url_studyPeriod}`, studyPeriod).then((resp) => {
+								if (resp.data['success']) {
+									$state.go('coes.studyPeriods.list', filters);
+								}
+							});
 						}
-					
-					  if (studyPeriod._id) {           
-						$http.put(`${url_studyPeriod}/${studyPeriod._id}`, studyPeriod).then((resp) => {
-						  if (resp.data['success']) {
-							$state.go('coes.studyPeriods.list');
-						  }
-						});  
-					  } else {
-						$http.post(`${url_studyPeriod}`, studyPeriod).then((resp) => {
-						  if (resp.data['success']) {
-							$state.go('coes.studyPeriods.list');
-						  }
-						});
-					  }
 					};
 					
 					if ($stateParams.coeId) {
 						$http.get(`${url}/${$stateParams.coeId}`).then((resp) => {
 							$scope.coe = resp.data['data'];
-							/*$scope.studyPeriod.startingDate = new Date($scope.studyPeriod.startingDate);
-							$scope.studyPeriod.endingDate = new Date($scope.studyPeriod.endingDate);*/
 						});
 					}
-					  
+					 
 					if ($stateParams.studyPeriodId) {
 						$http.get(`${url_studyPeriod}/${$stateParams.studyPeriodId}`).then((resp) => {
 							$scope.studyPeriod = resp.data['data'];
-							/*$scope.studyPeriod.startingDate = new Date($scope.studyPeriod.startingDate);
-							$scope.studyPeriod.endingDate = new Date($scope.studyPeriod.endingDate);*/
+							$scope.studyPeriod.startDate = new Date($scope.studyPeriod.startDate);
+							$scope.studyPeriod.endDate = new Date($scope.studyPeriod.endDate);
 						});
 					}
 					
@@ -265,7 +270,7 @@ namespace coes {
 				// It can only be implicitly activated by activating one of its children.
 				abstract: true,
 				// This abstract state will prepend '/payments' onto the urls of all its children.
-				url: '/payments', 
+				url: '/:studyPeriodId/payments', 
 				// Example of loading a template from a file. This is also a top level state,
 				// so this template file will be loaded and then inserted into the ui-view
 				// within index.html.
@@ -301,26 +306,21 @@ namespace coes {
 					});
 					
 					$scope.deletePayment = function (data: any)  {
-						$http.delete(`${url}/${data.id}`).then((resp) => {
+						$http.delete(`${url_payment}/${data.id}`).then((resp) => {
 							if (resp.data['success']) {
 								$state.go($state.current, {}, {reload: true});
 							}
 						}); 
 					};
-					
-					const filters = {
-						studyPeriod: $stateParams.studyPeriodId
-					};
-					
-					console.log("getting payments controller");
-					$http.get(`${url_payment}/_find`, filters).then((resp) => {
+										
+					$http.get(`${url_payment}/_find?studyPeriod=${$stateParams.studyPeriodId}`).then((resp) => {
 						$scope.payments = resp.data['data'];
 					});
 				}]
 			})
       
 			/////////////////////
-			// coes.studyPeriods. > Paymentss > Add/Modify //
+			// coes.studyPeriods > Payments > Add/Modify //
 			/////////////////////
 		  
 			// Using a '.' within a state name declares a child within a parent.
@@ -343,46 +343,50 @@ namespace coes {
 				controller: ['$scope', '$state', '$stateParams', '$http',
 				  function($scope: any, $state: any, $stateParams: any, $http: angular.IHttpService) {
 					
-					console.log("params " + JSON.stringify($stateParams));
-					
 					$http.get(`${url_paymentType}/_find`).then((resp: any) => {
 					  $scope.paymentTypes = resp.data['data'];
 					});
 					
-					$scope.editPayments = function (payment: any, studyPeriod: any)  {
+					$scope.editPayment = function (payment: any, studyPeriod: any)  {
 					  
-						if (payment.studyPeriod._id) {
-							payment['studyPeriod'] = studyPeriod._id;
-						}
-					
+						const filters = {
+							coeId: studyPeriod.coe._id,
+							studyPeriodId: studyPeriod._id	
+						};
+						
 						if (payment._id) {           
 							$http.put(`${url_payment}/${payment._id}`, payment).then((resp) => {
 								if (resp.data['success']) {
-									$state.go('coes.studyPeriods.payments.list');
+									$state.go('coes.studyPeriods.payments.list', filters);
 								}
 							});  
 						} else {
+							if (studyPeriod._id) {
+								payment['studyPeriod'] = studyPeriod._id;
+							}
 							$http.post(`${url_payment}`, payment).then((resp) => {
 								if (resp.data['success']) {
-									$state.go('coes.studyPeriods.payments.list');
+									$state.go('coes.studyPeriods.payments.list', filters);
 								}
 							});
 						}
 					};
 					
 					if ($stateParams.studyPeriodId) {
-						$http.get(`${url}/${$stateParams.studyPeriodId}`).then((resp) => {
+						$http.get(`${url_studyPeriod}/${$stateParams.studyPeriodId}`).then((resp) => {
 							$scope.studyPeriod = resp.data['data'];
-							/*$scope.payment.startingDate = new Date($scope.payment.startingDate);
-							$scope.payment.endingDate = new Date($scope.payment.endingDate);*/
+							$scope.payment = {
+								frequency: $scope.studyPeriod.frequency.description,
+								commPerc: $scope.studyPeriod.commPerc
+							};
 						});
 					}
 					  
 					if ($stateParams.paymentId) {
 						$http.get(`${url_payment}/${$stateParams.paymentId}`).then((resp) => {
 							$scope.payment = resp.data['data'];
-							/*$scope.payment.startingDate = new Date($scope.payment.startingDate);
-							$scope.payment.endingDate = new Date($scope.payment.endingDate);*/
+							$scope.payment.expectedDate = new Date($scope.payment.expectedDate);
+							$scope.payment.receivedDate = new Date($scope.payment.receivedDate);
 						});
 					}
 				}]

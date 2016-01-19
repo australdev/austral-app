@@ -32,9 +32,20 @@ router.delete('/:id', (req, res) => {
 });
 
 router.get('/_find', (req: express.Request, res: express.Response) => {
+  console.log("study Period");
   const modelOptions: ModelOptions = {
     authorization: getAuthorizationData(req),
     regularExpresion: true
+  };
+  studyPeriodService.find(req.query, modelOptions)
+    .then((studyPeriods: StudyPeriod[]) => formatSend(res, studyPeriods), (err: any) => sendError(res, err));
+});
+
+router.get('/_find_unpop', (req: express.Request, res: express.Response) => {
+  const modelOptions: ModelOptions = {
+    authorization: getAuthorizationData(req),
+    regularExpresion: true,
+    population: ''
   };
   studyPeriodService.find(req.query, modelOptions)
     .then((studyPeriods: StudyPeriod[]) => formatSend(res, studyPeriods), (err: any) => sendError(res, err));

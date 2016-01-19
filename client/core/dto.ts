@@ -136,3 +136,11 @@ export interface StudyPeriod extends BaseDto {
 
 }
 
+export interface CourseType extends BaseDto {
+
+  code?: string;
+  name?: string;
+  description?: string;
+
+}
+

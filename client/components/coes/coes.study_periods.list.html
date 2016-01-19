@@ -1,7 +1,10 @@
-<ul>     
-  <a ui-sref="coes.list({coeId:coe._id})">The parent</a>
-  
-  <a ui-sref="coes.studyPeriods.edit({studyPeriodId:studyPeriod._id, coeId:coe._id})">
+<ul>
+  <a ui-sref="coes.list({coeId:coe._id})">
+    <button class="btn btn-default">
+      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+    </button> 
+  </a>     
+  <a ui-sref="coes.studyPeriods.edit({studyPeriodId:studyPeriod._id, coeId: coe._id})">
     <button class="btn btn-default">
       <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
     </button> 
@@ -13,7 +16,7 @@
         <th>Start Date</th>
         <th>End date</th>
         <th>Period Fee</th>
-        <th>billed comm(%)</th>
+        <th>Comm(%)</th>
         <th>GTS</th>
         <th>Frequency</th>
 	  </tr>
@@ -26,20 +29,34 @@
           <td>{{ studyPeriod.periodFee }}</td>
           <td>{{ studyPeriod.commPerc }}</td>
           <td>{{ studyPeriod.periodGts }}</td>
-          <td>{{ studyPeriod.frequency }}</td>
+          <td>{{ studyPeriod.frequency.description }}</td>
           <td>
             <button ng-click="deleteStudyPeriod({id:studyPeriod._id})" class="btn btn-default">
               <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
             </button>
           </td>
           <td>
-            <a ui-sref="coes.studyPeriods.payments.edit({studyPeriodId:studyPeriod._id, coeId:coe._id}})">
+            <a ui-sref="coes.studyPeriods.edit({studyPeriodId:studyPeriod._id, coeId:coe._id})">
               <button class="btn btn-default">
                 <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
               </button>
             </a>
           </td>
+          <td>
+            <a ui-sref="coes.studyPeriods.payments.list({studyPeriodId:studyPeriod._id})">
+              <button class="btn btn-default">
+                <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
+              </button> 
+            </a>
+          </td>
       </tr>
     </tbody>
   </table>
+</ul>
+<ul>
+  <a ui-sref="coes.list({coeId:coe._id})">
+    <button class="btn btn-default">
+      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+    </button> 
+  </a>
 </ul>

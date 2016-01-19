@@ -6,7 +6,7 @@ export class CoeService extends BaseService<Coe> {
 
 	constructor() {
 		const defaultModelOptions: ModelOptions = {
-			population: 'school client frequency'
+			population: 'student institution courseType'
 		};
 		super(CoeModel, defaultModelOptions);
 	}

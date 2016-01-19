@@ -47,7 +47,7 @@ namespace frequencies {
 				controller: ['$scope', '$state', '$stateParams', '$http',
 				function($scope: any, $state: any, $stateParams: any, $http: angular.IHttpService) {
 					
-					$scope.deleteFrencuency = function (data: any)  {
+					$scope.deleteFrequency = function (data: any)  {
 						$http.delete(`${url}/${data.id}`).then((resp) => {
 							if (resp.data['success']) {
 								$state.go($state.current, {}, {reload: true});
@@ -55,7 +55,6 @@ namespace frequencies {
 						}); 
 					};
 					
-					console.log("getting frequencies controller");
 					$http.get(`${url}/_find`).then((resp) => {
 						$scope.frequencies = resp.data['data'];
 					});
@@ -86,32 +85,27 @@ namespace frequencies {
 				controller: ['$scope', '$state', '$stateParams', '$http',
 				  function($scope: any, $state: any, $stateParams: any, $http: angular.IHttpService) {
 					
-					console.log("params " + JSON.stringify($stateParams));
-					
-					$scope.editFrequencies = function (frequency: any)  {
-					  if (frequency._id) {           
-						$http.put(`${url}/${frequency._id}`, frequency).then((resp) => {
-						  if (resp.data['success']) {
-							$state.go('frequencies.list');
-						  }
-						});  
-					  } else {
-						$http.post(`${url}`, frequency).then((resp) => {
-						  if (resp.data['success']) {
-							$state.go('frequencies.list');
-						  }
-						});
-					  }
+					$scope.editFrequency = function (frequency: any)  {
+						if (frequency._id) {           
+							$http.put(`${url}/${frequency._id}`, frequency).then((resp) => {
+								if (resp.data['success']) {
+									$state.go('frequencies.list');
+								}
+							});  
+						} else {
+							$http.post(`${url}`, frequency).then((resp) => {
+								if (resp.data['success']) {
+									$state.go('frequencies.list');
+								}
+							});
+						}
 					};
 					  
 					if ($stateParams.frequencyId) {
 						$http.get(`${url}/${$stateParams.frequencyId}`).then((resp) => {
 							$scope.frequency = resp.data['data'];
-							/*$scope.frequency.startingDate = new Date($scope.frequency.startingDate);
-							$scope.frequency.endingDate = new Date($scope.frequency.endingDate);*/
 						});
 					}
-					
 				}]
 			});
 	}

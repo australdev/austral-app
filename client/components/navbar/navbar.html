@@ -1,4 +1,4 @@
-<nav class="navbar navbar-pills navbar-fixed-top">
+<nav class="navbar navbar-default navbar-fixed-top">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
@@ -13,11 +13,12 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="main_navbar">
       <ul class="nav navbar-nav">
-        <li ng-class="{active: $state.includes('coes')}"><a ui-sref="coes.list">Coes</a></li>
-        <li ng-class="{active: $state.includes('frequencies')}"><a ui-sref="frequencies.list">Schools</a></li>
-        <li ng-class="{active: $state.includes('institutions')}"><a ui-sref="institutions.list">Aquired Programs</a></li>
         <li ng-class="{active: $state.includes('paymentTypes')}"><a ui-sref="paymentTypes.list">Payment Types</a></li>
+        <li ng-class="{active: $state.includes('frequencies')}"><a ui-sref="frequencies.list">Frequencies</a></li>
         <li ng-class="{active: $state.includes('students')}"><a ui-sref="students.list">Students</a></li>
+        <li ng-class="{active: $state.includes('paymentTypes')}"><a ui-sref="courseTypes.list">Course Types</a></li>
+        <li ng-class="{active: $state.includes('institutions')}"><a ui-sref="institutions.list">Institutions</a></li>
+        <li ng-class="{active: $state.includes('coes')}"><a ui-sref="coes.list">Coes</a></li>
       </ul>
     </div>
 </nav>
