@@ -82,7 +82,8 @@
     "mongoose": "^4.3.0",
     "requirejs": "^2.1.22",
     "serve-static": "^1.10.0",
-    "systemjs": "^0.19.6"
+    "systemjs": "^0.19.6",
+    "xlsx": "^0.8.0"
   },
   "engines": {
     "node": "^4.2.1"

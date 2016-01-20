@@ -3,6 +3,7 @@ import * as express from 'express';
 import {sendError, formatSend, getAuthorizationData} from '../core/web_util';
 import {paymentService} from './payment_service';
 import {Payment, ModelOptions} from '../../client/core/dto';
+import {xlsxService} from '../xlsx/xlsx_service';
 
 const router = express.Router();
 
@@ -48,6 +49,17 @@ router.get('/:id', (req: express.Request, res: express.Response) => {
     .then((payment: Payment) => formatSend(res, payment), (err: any) => sendError(res, err));
 });
 
+router.post('/_download', (req: express.Request, res: express.Response) => {
+  const modelOptions: ModelOptions = {
+    authorization: getAuthorizationData(req),
+    regularExpresion: true
+  };
+  paymentService.downloadData(req.body, modelOptions)
+    .then((file: string) => {
+      res.writeHead(200, [['Content-Type',  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']]);
+      res.end(file);
+    }, (err: any) => sendError(res, err));
+});
 
 export = router;
 

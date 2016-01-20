@@ -20,7 +20,12 @@ namespace students {
 				// Example of loading a template from a file. This is also a top level state,
 				// so this template file will be loaded and then inserted into the ui-view
 				// within index.html.
-				templateUrl: 'components/students/students.html'
+				templateUrl: 'components/students/students.html',
+				controller: ['$scope', '$state', '$stateParams', '$http',
+					function($scope: any, $state: any, $stateParams: any, $http: angular.IHttpService) {
+						$scope.texts.title = "Student";
+					}
+				]
 			})
 			
 			/////////////////////

@@ -148,3 +148,12 @@ export interface CourseType extends BaseDto {
 
 }
 
+export interface PaymentSearch extends BaseDto {
+
+  student?: Student;
+  institution?: Institution;
+  payment?: Payment;
+  startDate?: Date;
+  endDate?: Date;
+}
+

@@ -1,12 +1,11 @@
 <ul>
-	<div class="container container-small">
+  <a ui-sref="coes.list">
+    <button class="btn btn-default">
+      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+    </button> 
+  </a>
     
-    <a ui-sref="coes.list">
-      <button class="btn btn-default">
-        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-      </button> 
-    </a>
-  
+	<div class="container container-small">
 		<div ui-view class="slide">
 			<form class="form-horizontal" layout="column" ng-submit="editCoe(coe)">
       

@@ -20,7 +20,12 @@ namespace paymentTypes {
 				// Example of loading a template from a file. This is also a top level state,
 				// so this template file will be loaded and then inserted into the ui-view
 				// within index.html.
-				templateUrl: 'components/payment_types/payment_types.html'
+				templateUrl: 'components/payment_types/payment_types.html',
+				controller: ['$scope', '$state', '$stateParams', '$http',
+					function($scope: any, $state: any, $stateParams: any, $http: angular.IHttpService) {
+						$scope.texts.title = "Payment Type";
+					}
+				]
 			})
 			
 			/////////////////////

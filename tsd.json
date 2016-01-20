@@ -115,6 +115,9 @@
     },
     "angularjs/angular-cookies.d.ts": {
       "commit": "4639f126d25956b6a7ddf8462dd4e73101983b85"
+    },
+    "xlsx/xlsx.d.ts": {
+      "commit": "2e7a477ac2b6471055aa6e0e56b333e8f327d6b7"
     }
   }
 }
