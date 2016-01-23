@@ -48,8 +48,8 @@ const schemas = {
   frequency: new Schema({
 		code: { type: String, required: true },
 		description: { type: String, required: true },
-		periodicity: { { type: ObjectId, ref: 'periodicity', required: true },
-		minPeriod: { type: String, required: true },
+		periodicity: { type: Number, required: true },
+		minPeriod: { type: ObjectId, ref: 'periodicity', required: true },
 		createdBy: { type: ObjectId, ref: 'user' },
 		createdAt: { type: Number },
 		updatedAt: { type: Number }

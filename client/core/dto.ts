@@ -157,4 +157,10 @@ export interface PaymentSearch extends BaseDto {
   endDate?: Date;
 }
 
+export interface Periodicity extends BaseDto {
 
+  code?: string;
+  name?: string;
+  description?: string;
+
+}

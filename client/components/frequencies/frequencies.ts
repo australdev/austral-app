@@ -9,6 +9,7 @@ namespace frequencies {
 	function config($stateProvider: any) {
 
 		const url = '/api/frequency';
+		const url_periodicity = '/api/periodicity';
 	
 		$stateProvider
 			.state('frequencies', {
@@ -25,6 +26,10 @@ namespace frequencies {
 					function($scope: any, $state: any, $stateParams: any, $http: angular.IHttpService) {
 						$scope.texts = {};
 						$scope.texts.title = "Frequency";
+						
+						$http.get(`${url_periodicity}/_find`).then((resp: any) => {
+							$scope.periodicities = resp.data['data'];
+							});
 					}
 				]
 			})

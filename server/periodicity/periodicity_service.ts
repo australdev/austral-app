@@ -1,4 +1,4 @@
-﻿import {Periodicity, PeriodicitySearch, ModelOptions} from '../../client/core/dto';
+﻿import {Periodicity, ModelOptions} from '../../client/core/dto';
 import {PeriodicityModel} from '../core/model';
 import {BaseService} from '../core/base_service';
 import {ObjectUtil} from '../../client/core/util';
