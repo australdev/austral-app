@@ -48,7 +48,7 @@ const schemas = {
   frequency: new Schema({
 		code: { type: String, required: true },
 		description: { type: String, required: true },
-		periodicity: { type: String, required: true },
+		periodicity: { { type: ObjectId, ref: 'periodicity', required: true },
 		minPeriod: { type: String, required: true },
 		createdBy: { type: ObjectId, ref: 'user' },
 		createdAt: { type: Number },
@@ -115,6 +115,14 @@ const schemas = {
 		createdBy: { type: ObjectId, ref: 'user' },
 		createdAt: { type: Number },
 		updatedAt: { type: Number }
+	}),
+	periodicity: new Schema({
+		code: { type: String, required: true },
+		name: { type: String, required: true },
+		description: { type: String, required: true },
+		createdBy: { type: ObjectId, ref: 'user' },
+		createdAt: { type: Number },
+		updatedAt: { type: Number }
 	})
 };
 
@@ -142,6 +150,7 @@ export const InstitutionModel = db.model('institution', schemas.institution);
 export const PaymentTypeModel = db.model('paymentType', schemas.paymentType);
 export const StudyPeriodModel = db.model('studyPeriod', schemas.studyPeriod);
 export const CourseTypeModel = db.model('courseType', schemas.courseType);
+export const PeriodicityModel = db.model('periodicity', schemas.periodicity);
 
 
 schemas.user.pre('save', function (next: Function) {
