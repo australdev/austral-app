@@ -2,7 +2,6 @@
 import {PaymentModel, CoeModel, StudentModel, InstitutionModel} from '../core/model';
 import {BaseService} from '../core/base_service';
 import {ObjectUtil} from '../../client/core/util';
-import {xlsxService} from '../xlsx/xlsx_service';
 
 export class PaymentService extends BaseService<Payment> {
 
@@ -13,7 +12,7 @@ export class PaymentService extends BaseService<Payment> {
 		super(PaymentModel, defaultModelOptions);
 	}
 
-	downloadData(data: PaymentSearch, newOptions: ModelOptions = {}): Promise<string> {
+	downloadData(data: PaymentSearch, newOptions: ModelOptions = {}): Promise<Payment[]> {
 
 		const studentPopulation = {
 			path: 'student', 
@@ -76,10 +75,10 @@ export class PaymentService extends BaseService<Payment> {
 			]
 		};
 		
-		return new Promise<string>((resolve: Function, reject: Function) => {
+		return new Promise<Payment[]>((resolve: Function, reject: Function) => {
 			this.find(data.payment, newOptions)
 			.then((results: Payment[]) => {
-				resolve(xlsxService.printPayments(results));
+				resolve(results);
 			})
 			.catch((err: Error) => {
 				reject(err);

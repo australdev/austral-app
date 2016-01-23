@@ -28,7 +28,7 @@ node_modules
 dist
 test
 .tmp
-tools/typings/tsd
+# tools/typings/tsd
 .idea
 
 #Bower Momponents

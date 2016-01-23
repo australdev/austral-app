@@ -61,7 +61,8 @@ export const PATH = {
       slash(resolve('angular-touch/angular-touch.js')),    
       slash(resolve('angular-messages/angular-messages.js')),    
       slash(resolve('angular-toastr/dist/angular-toastr.js')),
-      slash(resolve('angular-toastr/dist/angular-toastr.tpls.js'))
+      slash(resolve('angular-toastr/dist/angular-toastr.tpls.js')),
+      slash(resolve('node-safe-filesaver/FileSaver.js'))
     ],
     jslib_copy_only: [
       slash(resolve('systemjs/dist/system-polyfills.js')),

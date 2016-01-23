@@ -23,6 +23,7 @@ namespace paymentTypes {
 				templateUrl: 'components/payment_types/payment_types.html',
 				controller: ['$scope', '$state', '$stateParams', '$http',
 					function($scope: any, $state: any, $stateParams: any, $http: angular.IHttpService) {
+						$scope.texts = {};
 						$scope.texts.title = "Payment Type";
 					}
 				]

@@ -23,6 +23,7 @@ namespace courseTypes {
 				templateUrl: 'components/course_types/course_types.html',
 				controller: ['$scope', '$state', '$stateParams', '$http',
 					function($scope: any, $state: any, $stateParams: any, $http: angular.IHttpService) {
+						$scope.texts = {};
 						$scope.texts.title = "Course Type";
 					}
 				]

@@ -1,4 +1,7 @@
 <ul>
+  <button class="btn btn-default" ng-click="downloadSearch(payments)">
+    <span class="glyphicon glyphicon-save-file" aria-hidden="true"></span>
+  </button> 
   <div class="container">
 		<div ui-view class="slide">
 			<form class="form-horizontal" layout="column" ng-submit="searchPayments(paymentSearch)">
@@ -95,4 +98,7 @@
       </tr>
     </tbody>
   </table>
+  <button class="btn btn-default" ng-click="downloadSearch(payments)">
+    <span class="glyphicon glyphicon-save-file" aria-hidden="true"></span>
+  </button> 
 </ul>

@@ -49,16 +49,26 @@ router.get('/:id', (req: express.Request, res: express.Response) => {
     .then((payment: Payment) => formatSend(res, payment), (err: any) => sendError(res, err));
 });
 
-router.post('/_download', (req: express.Request, res: express.Response) => {
+router.post('/_search_overdue', (req: express.Request, res: express.Response) => {
   const modelOptions: ModelOptions = {
     authorization: getAuthorizationData(req),
     regularExpresion: true
   };
   paymentService.downloadData(req.body, modelOptions)
-    .then((file: string) => {
-      res.writeHead(200, [['Content-Type',  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']]);
-      res.end(file);
-    }, (err: any) => sendError(res, err));
+    .then((payments: Payment[]) => formatSend(res, payments), (err: any) => sendError(res, err));
+});
+
+router.post('/_download', (req: express.Request, res: express.Response) => {
+  const modelOptions: ModelOptions = {
+    authorization: getAuthorizationData(req)
+  };
+  
+  try {
+        const file = xlsxService.printPayments(req.body);
+        formatSend(res, file);
+    } catch (error) {
+      sendError(res, error);
+    }
 });
 
 export = router;

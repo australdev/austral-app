@@ -21,8 +21,11 @@ export class XlsxService {
 		
 		/* write file */
 		const ws_filename = 'payments.xlsx';
-		XLSX.writeFile(wb, ws_filename)
-		return ws_filename; //	
+		XLSX.writeFile(wb, ws_filename);
+		//return XLSX.writeFile(wb, {type: 'base64'});
+		
+		const wbout = XLSX.write(wb, {bookType:'xlsx', bookSST:true, type: 'binary'});
+		return wbout; //	
 	}
 	
 	datenum(value: any, date1904?: any) {
@@ -42,13 +45,15 @@ export class XlsxService {
 		{title: 'Student', att: ['studyPeriod', 'coe', 'student', 'name']},
 		{title: 'Course Fee', att: ['coursePayment']},
 		{title: 'Commission (%)', att: ['commPerc']},
-		{title: 'Expected Commission', att: ['studyPeriod', 'coe', 'institution', 'name']},
+		{title: 'Expected Commission', att: ['expectedComm']},
 		{title: 'Due To', att: ['expectedDate']},
 		{title: 'Received Value', att: ['receivedValue']}
 	];
 	
 	const range = {s: {c: COLUMNS.length, r: 10000000}, e: {c: 0, r: 0 }};
-	for (let R = 0; R !== data.length; ++R) {
+	for (let R = 0; R !== (data.length + 1); ++R) {
+		const paymentRow = R > 0 ? (R - 1) : R;
+		const payment = data[paymentRow];
 		for (let C = 0; C !== COLUMNS.length; ++C) {
 			if (range.s.r > R) {
 				range.s.r = R;
@@ -63,16 +68,28 @@ export class XlsxService {
 				range.e.c = C;
 			}
 
-			let currentValue = ObjectUtil.clone(data);
-			for (let value in COLUMNS[C].att) {
-				if (value && currentValue[value]) {
-					currentValue = ObjectUtil.clone(currentValue[value]);
-				} else {
-					break;
+			let currentValue: any;
+			
+			if (R === 0) {
+				currentValue = COLUMNS[C].title;
+			} else {
+				currentValue = ObjectUtil.clone(payment);
+				for (let value in COLUMNS[C].att) {
+					const prop = COLUMNS[C].att[value];
+					if (ObjectUtil.isPresent(prop)) {
+						if (ObjectUtil.isPresent(currentValue[prop])) {
+							currentValue = ObjectUtil.clone(currentValue[prop]);	
+						} else {
+							currentValue = null;
+						}
+					} else {
+						break;
+					}
 				}
 			}
 			
-			const cell = {v: currentValue };
+			
+			const cell = { v: currentValue };
 			if (ObjectUtil.isBlank(cell.v)) {
 				continue;
 			}

@@ -66,13 +66,28 @@ namespace payments {
 					});
 												
 					$scope.searchPayments = function (data: any)  {
+						$http.post(`${url}/_search_overdue`, data).then((resp) => {
+							if (resp.data['success']) {
+								$scope.payments = resp.data['data'];
+							}
+						});
+					};
+					
+					$scope.downloadSearch = function (data: any)  {
 						$http.post(`${url}/_download`, data).then((resp) => {
-							//$scope.payments = resp.data['data'];
-							 console.log(" downloads: " + JSON.stringify(resp));
+							if (resp.data['success']) {
+								const file = resp.data['data'];
+								const buf = new ArrayBuffer(file.length);
+								const view = new Uint8Array(buf);
+								for ( let i = 0; i !== file.length; ++i) {
+									view[i] = file.charCodeAt(i) & 0xFF;
+								}
+								const blob = new Blob([buf], {type: "application/octet-stream"});
+								saveAs(blob, 'Payments.xlsx');
+							}
 						});
 					};
 				}]
 			});
 	}
-			
 }

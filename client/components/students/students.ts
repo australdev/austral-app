@@ -23,6 +23,7 @@ namespace students {
 				templateUrl: 'components/students/students.html',
 				controller: ['$scope', '$state', '$stateParams', '$http',
 					function($scope: any, $state: any, $stateParams: any, $http: angular.IHttpService) {
+						$scope.texts = {};
 						$scope.texts.title = "Student";
 					}
 				]
