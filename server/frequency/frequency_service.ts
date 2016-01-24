@@ -6,7 +6,7 @@ export class FrequencyService extends BaseService<Frequency> {
 
 	constructor() {
 		const defaultModelOptions: ModelOptions = {
-			population: 'school client frequency'
+			population: 'minPeriod'
 		};
 		super(FrequencyModel, defaultModelOptions);
 	}

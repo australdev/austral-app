@@ -20,7 +20,7 @@ export class XlsxService {
 		wb.Sheets[ws_name] = ws;
 		
 		/* write file */
-		const wbout = XLSX.write(wb, {bookType:'xlsx', bookSST:true, type: 'binary'});
+		const wbout = XLSX.write(wb, {bookType: 'xlsx', bookSST: true, type: 'binary'});
 		return wbout;	
 	}
 	
