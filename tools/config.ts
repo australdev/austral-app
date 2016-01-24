@@ -20,7 +20,7 @@ process.env.AUSTRAL_MONGO_URI = AUSTRAL_MONGO_URI;
 const AUSTRAL_SECRET: string = argv['AUSTRAL_SECRET'] || process.env.AUSTRAL_SECRET || 'australSecret';
 process.env.AUSTRAL_SECRET = AUSTRAL_SECRET;
 
-export const PORT: number = argv['port'] || 5555;
+export const PORT: number = argv['port'] || process.env.PORT || 5555;
 export const LIVE_RELOAD_PORT: number = argv['reload-port'] || 4002;
 export const APP_BASE: string = argv['base'] || '/';
 export const APP_VERSION: string = pkg.version;
