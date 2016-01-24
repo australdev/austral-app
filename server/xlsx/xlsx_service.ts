@@ -20,12 +20,8 @@ export class XlsxService {
 		wb.Sheets[ws_name] = ws;
 		
 		/* write file */
-		const ws_filename = 'payments.xlsx';
-		XLSX.writeFile(wb, ws_filename);
-		//return XLSX.writeFile(wb, {type: 'base64'});
-		
 		const wbout = XLSX.write(wb, {bookType:'xlsx', bookSST:true, type: 'binary'});
-		return wbout; //	
+		return wbout;	
 	}
 	
 	datenum(value: any, date1904?: any) {
