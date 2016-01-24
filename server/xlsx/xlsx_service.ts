@@ -24,11 +24,12 @@ export class XlsxService {
 		return wbout;	
 	}
 	
-	datenum(value: any, date1904?: any) {
+	datenum(value: Date, date1904?: any) {
+		const dateToString = value.getFullYear() + "/" + (value.getMonth() + 1) + "/" + (value.getDate() + 1);
+		let epoch: number = Date.parse(dateToString);
 		if (date1904) {
-			value += 1462;
-		}
-		const epoch = Date.parse(value);
+			epoch += 1462;
+		};
 		return (epoch - Date.UTC(1899, 11, 30)) / (24 * 60 * 60 * 1000);
 	}
 	
@@ -84,22 +85,31 @@ export class XlsxService {
 				}
 			}
 			
-			
-			const cell = { v: currentValue };
-			if (ObjectUtil.isBlank(cell.v)) {
+			if (ObjectUtil.isBlank(currentValue)) {
 				continue;
+			}
+			
+			const cell = {};
+			//To Do, fix date recognition in excel
+			if (COLUMNS[C].title === 'Due To' && R !== 0) {
+				const thisDate = new Date(currentValue.toString());
+				cell['v'] = thisDate;
+			} else {
+				cell['v'] = currentValue;
 			}
 			
 			const cell_ref = XLSX.utils.encode_cell( {c: C, r: R});
 			
-			if (typeof cell.v === 'number') { 
+			if (typeof cell['v'] === 'number') { 
 				cell['t'] = 'n';
-			} else if (typeof cell.v === 'boolean') {
+			} else if (typeof cell['v'] === 'boolean') {
 				cell['t'] = 'b';
-			} else if (cell.v instanceof Date) {
-				cell['t'] = 'n'; 
-				cell['z'] = XLSX.SSF._table[14];
-				cell.v = this.datenum(cell.v);
+			} else if (cell['v'] instanceof Date) {
+				cell['t'] = 'n';
+				cell['z'] = "yy/dd/mm"; //XLSX.SSF._table[14];
+				//cell['s'] = { numFmt: "m/dd/yy"}
+				console.log("date format");
+				cell['v'] = this.datenum(cell['v']);
 			} else {
 				cell['t'] = 's';
 			}
