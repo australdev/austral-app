@@ -65,35 +65,42 @@ export class PaymentService extends BaseService<Payment> {
 			
 			const modelOptions: ModelOptions = {
 				authorization: newOptions.authorization,
-				population: 'coe',
 				distinct: '_id',
 				additionalData: {}
 			};
 			
 			// Add search filters
 			if (data.student && data.student._id) {
-				console.log("add student filter");
-				ObjectUtil.merge(modelOptions.additionalData, { 'coe.student': data.student._id }); 
+				ObjectUtil.merge(modelOptions.additionalData, { 'student': data.student._id }); 
 			}
 			
 			if (data.institution && data.institution._id) {
-				console.log("add institution filter");
-				ObjectUtil.merge(modelOptions.additionalData, { 'coe.institution': data.institution._id });
+				ObjectUtil.merge(modelOptions.additionalData, { 'institution': data.institution._id });
 			}
 			
-			studyPeriodService.findDistinct({}, modelOptions).then((results: String[]) => {
-				console.log("results " + JSON.stringify(results));
+			coeService.findDistinct({}, modelOptions)
+			.then((results: String[]) => {
 				if (results.length > 0) {
-					ObjectUtil.merge(newOptions.additionalData, { 'studyPeriod._id': { $in: results } });
-				}
-				
-				this.find(data.payment, newOptions)
-				.then((results: Payment[]) => {
-					resolve(results);
-				}).catch((err: Error) => {
-					reject(err);
+					modelOptions.additionalData = { coe: { $in: results }};
+					
+					return studyPeriodService.findDistinct({}, modelOptions);
+				} else {
+					reject(new Error("There are not coes with those filters"));	
 					return;
-				});
+				}
+			})
+			.then((results: String[]) => {
+				if (results.length > 0) {
+					ObjectUtil.merge(newOptions.additionalData, { studyPeriod: { $in: results } });
+					
+					return this.find(data.payment, newOptions);
+				} else {
+					reject(new Error("There are not study periods with those filters"));
+					return;	
+				}
+			})
+			.then((results: Payment[]) => {
+					resolve(results);
 			})	
 			.catch((err: Error) => {
 				reject(err);

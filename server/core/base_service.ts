@@ -36,8 +36,6 @@ export abstract class BaseService<T extends BaseDto> extends BaseAuthorizationSe
 				reject(new Error(authError));
 				return;
 			}
-			console.log("continue modelOptions " + JSON.stringify(txModelOptions));
-			console.log("continue exect " + authError);
 			newDocument.save((err: Error, savedDoc: any) => {
 				if (err) {
 					reject(err);
@@ -147,7 +145,6 @@ export abstract class BaseService<T extends BaseDto> extends BaseAuthorizationSe
 				return;
 			}
 			const search = this.obtainSearchExpression(data, txModelOptions);
-			console.log("search expr: " + JSON.stringify(search));
 			this.Model.find(search, txModelOptions.projection,
 			 { sort: '-createdAt', lean: true }).populate(txModelOptions.population)
 			.exec((err, foundObjs) => {
@@ -258,7 +255,6 @@ export abstract class BaseService<T extends BaseDto> extends BaseAuthorizationSe
 	protected obtainTransactionModelOptionsAndAddData(data: T, newOptions: ModelOptions = {}): ModelOptions {	
 		const transactionOptions: ModelOptions = this.obtainTransactionModelOptions(newOptions);
 		ObjectUtil.merge(data, transactionOptions.additionalData); // Adds additionalData if specified
-		console.log("merge data " + JSON.stringify(data));
 		this.copySignificantAuthorizationData(data, transactionOptions);
 		return transactionOptions;
 	}

@@ -32,7 +32,6 @@ router.delete('/:id', (req, res) => {
 });
 
 router.get('/_find', (req: express.Request, res: express.Response) => {
-  console.log("study Period");
   const modelOptions: ModelOptions = {
     authorization: getAuthorizationData(req),
     regularExpresion: true

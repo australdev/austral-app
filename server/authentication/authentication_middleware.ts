@@ -59,7 +59,6 @@ export class Authentication {
 			});
 			
 		} catch (err) {
-			console.log(err);
 			return next(new Error("Token could not be verified"));
 		}
 	}

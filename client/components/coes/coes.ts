@@ -180,6 +180,8 @@ namespace coes {
 					
 					$scope.texts.title = "Coe - Study Period";
 					
+					$scope.coeId = $stateParams.coeId;
+					
 					$http.get(`${url}/${$stateParams.coeId}`).then((resp) => {
 						$scope.coe = resp.data['data'];
 					});
@@ -188,7 +190,7 @@ namespace coes {
 						$http.delete(`${url_studyPeriod}/${data.id}`).then((resp) => {
 							if (resp.data['success']) {
 								const filters = {
-									coe: $scope.coe._Id	
+									coeId: $scope.coe._id	
 								};
 								$state.go($state.current, filters, {reload: true});
 							}
@@ -227,13 +229,13 @@ namespace coes {
 					
 					$scope.texts.title = "Coe - Study Period";
 					
+					$scope.coeId = $stateParams.coeId;
+					
 					$http.get(`${url_frequency}/_find`).then((resp) => {
 						$scope.frequencies = resp.data['data'];
 					});
 					
 					$scope.editStudyPeriod = function (studyPeriod: any, coe: any)  {
-					  	//const studyPeriod = $scope.studyPeriod;
-						  
 						const filters = {
 							coeId: coe._id	
 						};
@@ -256,8 +258,8 @@ namespace coes {
 						}
 					};
 					
-					if ($stateParams.coeId) {
-						$http.get(`${url}/${$stateParams.coeId}`).then((resp) => {
+					if ($scope.coeId) {
+						$http.get(`${url}/${$scope.coeId}`).then((resp) => {
 							$scope.coe = resp.data['data'];
 						});
 					}
@@ -315,6 +317,9 @@ namespace coes {
 					
 					$scope.texts.title = "Coe - Study Period - Payment";
 					
+					$scope.coeId = $stateParams.coeId;
+					$scope.studyPeriodId = $stateParams.studyPeriodId;
+					
 					$http.get(`${url_studyPeriod}/${$stateParams.studyPeriodId}`).then((resp) => {
 						$scope.studyPeriod = resp.data['data'];
 					});
@@ -370,6 +375,8 @@ namespace coes {
 				  function($scope: any, $state: any, $stateParams: any, $http: angular.IHttpService) {
 					
 					$scope.texts.title = "Coe - Study Period - Payment";
+					$scope.coeId = $stateParams.coeId;
+					$scope.studyPeriodId = $stateParams.studyPeriodId;
 					
 					$http.get(`${url_paymentType}/_find`).then((resp: any) => {
 					  $scope.paymentTypes = resp.data['data'];
