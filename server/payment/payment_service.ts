@@ -2,6 +2,8 @@
 import {PaymentModel, CoeModel, StudentModel, InstitutionModel} from '../core/model';
 import {BaseService} from '../core/base_service';
 import {ObjectUtil} from '../../client/core/util';
+import {coeService} from '../coe/coe_service';
+import {studyPeriodService} from '../study_period/study_period_service';
 
 export class PaymentService extends BaseService<Payment> {
 
@@ -14,43 +16,28 @@ export class PaymentService extends BaseService<Payment> {
 
 	downloadData(data: PaymentSearch, newOptions: ModelOptions = {}): Promise<Payment[]> {
 
+		
 		const studentPopulation = {
 			path: 'student', 
-			model: StudentModel	
+			model: StudentModel,
+			select: 'name'
 		};
 		
 		const institutionPopulation = {
 			path: 'institution', 
-			model: InstitutionModel
+			model: InstitutionModel,
+			select: 'name'
 		};
-		
-		// Add search filters
-		if (data.student && data.student._id) {
-			studentPopulation['match'] = {
-				_id: data.student._id
-			};		
-		}
-		
-		if (data.institution && data.institution._id) {
-			institutionPopulation['match'] = {
-				_id: data.institution._id
-			};		
-		}
-		
-		//Add data filter for dates
-		if (data.institution && data.institution._id) {
-			institutionPopulation['match'] = {
-				age: { $gte: 21 }	
-			};		
-		}
 		
 		newOptions.population = [{
 			path: 'studyPeriod',
+			select: 'coe',
 			populate: {
 				path: 'coe', 
 				model: CoeModel,
+				select: 'student institution',
 				populate: [studentPopulation, institutionPopulation]
-				}
+			}
 		},
 		{
 			path: 'paymentType'
@@ -67,21 +54,50 @@ export class PaymentService extends BaseService<Payment> {
 			const eDate = new Date(data.endDate.toString());
 			dateRestrictions['$lte'] = eDate ;
 		}
+
 		
-		newOptions.complexSearch = {
-			$and: [
-				{ $or: [{ receivedValue: null}, { $where: 'this.receivedValue < this.expectedValue' }] },
-				{ expectedDate: dateRestrictions }
-			]
+		newOptions.additionalData = {
+				 $or: [{ receivedValue: null}, { $where: 'this.receivedValue < this.expectedValue' }],
+				 expectedDate: dateRestrictions
 		};
 		
 		return new Promise<Payment[]>((resolve: Function, reject: Function) => {
-			this.find(data.payment, newOptions)
-			.then((results: Payment[]) => {
-				resolve(results);
-			})
+			
+			const modelOptions: ModelOptions = {
+				authorization: newOptions.authorization,
+				population: 'coe',
+				distinct: '_id',
+				additionalData: {}
+			};
+			
+			// Add search filters
+			if (data.student && data.student._id) {
+				console.log("add student filter");
+				ObjectUtil.merge(modelOptions.additionalData, { 'coe.student': data.student._id }); 
+			}
+			
+			if (data.institution && data.institution._id) {
+				console.log("add institution filter");
+				ObjectUtil.merge(modelOptions.additionalData, { 'coe.institution': data.institution._id });
+			}
+			
+			studyPeriodService.findDistinct({}, modelOptions).then((results: String[]) => {
+				console.log("results " + JSON.stringify(results));
+				if (results.length > 0) {
+					ObjectUtil.merge(newOptions.additionalData, { 'studyPeriod._id': { $in: results } });
+				}
+				
+				this.find(data.payment, newOptions)
+				.then((results: Payment[]) => {
+					resolve(results);
+				}).catch((err: Error) => {
+					reject(err);
+					return;
+				});
+			})	
 			.catch((err: Error) => {
 				reject(err);
+				return;
 			});	
 		});
 	}

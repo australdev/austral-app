@@ -75,6 +75,7 @@ const schemas = {
 		expectedComm: { type: Number, required: true },
 		receivedDate: { type: Date, default: new Date() },
 		receivedValue: { type: Number },
+		invoice: { type: Number },
 		createdBy: { type: ObjectId, ref: 'user' },
 		createdAt: { type: Number },
 		updatedAt: { type: Number }

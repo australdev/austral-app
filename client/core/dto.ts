@@ -128,7 +128,7 @@ export interface Payment extends BaseDto {
 
 export interface StudyPeriod extends BaseDto {
 
-  coe: any;
+  coe?: any;
   description?: string;
   startDate?: Date;
   endDate?: Date;

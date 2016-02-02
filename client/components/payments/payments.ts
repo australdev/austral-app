@@ -55,7 +55,7 @@ namespace payments {
 				controller: ['$scope', '$state', '$stateParams', '$http',
 				function($scope: any, $state: any, $stateParams: any, $http: angular.IHttpService) {
 					
-					$scope.paymentSearch = {};
+					$scope.paymentSearch = { payment: {} };
 					
 					$http.get(`${url_student}/_find`).then((resp: any) => {
 					  $scope.students = resp.data['data'];

@@ -42,7 +42,9 @@ export class XlsxService {
 		{title: 'Student', att: ['studyPeriod', 'coe', 'student', 'name']},
 		{title: 'Course Fee', att: ['coursePayment']},
 		{title: 'Commission (%)', att: ['commPerc']},
+		{title: 'Gts', att: ['paymentGts']},
 		{title: 'Expected Commission', att: ['expectedComm']},
+		{title: 'Expected Value', att: ['expectedValue']},
 		{title: 'Due To', att: ['expectedDate']},
 		{title: 'Received Value', att: ['receivedValue']}
 	];
@@ -106,9 +108,8 @@ export class XlsxService {
 				cell['t'] = 'b';
 			} else if (cell['v'] instanceof Date) {
 				cell['t'] = 'n';
-				cell['z'] = "yy/dd/mm"; //XLSX.SSF._table[14];
-				//cell['s'] = { numFmt: "m/dd/yy"}
-				console.log("date format");
+				cell['z'] = XLSX.SSF._table[14];
+				cell['s'] = { numFmt: "m/dd/yy"};
 				cell['v'] = this.datenum(cell['v']);
 			} else {
 				cell['t'] = 's';

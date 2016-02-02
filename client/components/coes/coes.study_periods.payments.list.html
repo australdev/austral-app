@@ -4,7 +4,7 @@
       <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
     </button> 
   </a>
-  <a ui-sref="coes.studyPeriods.payments.edit({paymentId:payment._id, studyPeriodId:studyPeriod._id, coeId:studyPeriod.coe._id})">
+  <a ui-sref="coes.studyPeriods.payments.edit({studyPeriodId:studyPeriod._id, coeId:studyPeriod.coe._id})">
     <button class="btn btn-default">
       <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
     </button> 
@@ -23,6 +23,7 @@
         <th>Expected ($)</th>
         <th>Received On</th>
         <th>Received ($)</th>
+        <th>Invoice (#)</th>
         
 	  </tr>
     </thead>
@@ -39,6 +40,7 @@
           <td>{{ payment.expectedValue }}</td>
           <td>{{ payment.receivedDate | date:'dd-MM-yyyy' }}</td>
           <td>{{ payment.receivedValue }}</td>
+          <td>{{ payment.invoice }}</td>
 		 
           <td>
             <button ng-click="deletePayment({id:payment._id})" class="btn btn-default">

@@ -18,7 +18,6 @@ namespace coes {
 		const url_courseType = '/api/course-type';
 		const url_student = '/api/student';
 		const url_institution = '/api/institution';
-		
 					
 		$stateProvider
 			.state('coes', {
