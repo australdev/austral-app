@@ -123,6 +123,7 @@ export interface Payment extends BaseDto {
   receivedValue?: number;
   frequency?: string;
   expectedComm?: number;
+  invoice?: number;
 
 }
 
@@ -134,9 +135,12 @@ export interface StudyPeriod extends BaseDto {
   endDate?: Date;
   periodFee?: string;
   commPerc?: string;
-  periodGts?: string;
+  periodGts?: number;
   frequency?: any;
   expectedComm?: number;
+  expectedAmount?: number;
+  receivedAmount?: number;
+  remainingAmount?: number;
 
 }
 
@@ -155,6 +159,28 @@ export interface PaymentSearch extends BaseDto {
   payment?: Payment;
   startDate?: Date;
   endDate?: Date;
+
+}
+
+export interface Balance extends BaseDto {
+
+  coe?: Coe;
+  expectedCommission?: number;
+  expectedGts?: number;
+  expectedAmount?: number;
+  receivedAmount?: number;
+  remainingAmount?: number;
+
+}
+
+export interface BalanceSearch extends BaseDto {
+
+  student?: Student;
+  institution?: Institution;
+  payment?: Payment;
+  coe?: Coe;
+  studyPeriod?: StudyPeriod;
+
 }
 
 export interface Periodicity extends BaseDto {

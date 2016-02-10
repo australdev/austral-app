@@ -49,5 +49,12 @@ export class ObjectUtil {
 		return filters;
 	}
 
+	static getNumber(data: number): number {
+		 if (data === undefined || data === null) {
+			 return 0;
+		 }
+		 
+		 return data;
+	}
 }
 

@@ -14,6 +14,7 @@ import './components/frequencies/frequencies';
 import './components/coes/coes';
 import './components/course_types/course_types';
 import './components/payments/payments';
+import './components/balances/balances';
 
 declare var moment: moment.MomentStatic;
 
@@ -103,7 +104,8 @@ namespace app {
     'app.institutions',
     'app.students',
     'app.courseTypes',
-    'app.payments'
+    'app.payments',
+    'app.balances'
   ])
     .config(config)
     .config(routerConfig)

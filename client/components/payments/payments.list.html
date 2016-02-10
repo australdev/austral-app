@@ -81,6 +81,7 @@
         <th>Expected ($)</th>
         <th>Received On</th>
         <th>Received ($)</th>
+        <th>Invoice #</th>
         
 	  </tr>
     </thead>
@@ -99,6 +100,7 @@
           <td>{{ payment.expectedValue }}</td>
           <td>{{ payment.receivedDate | date:'dd-MM-yyyy' }}</td>
           <td>{{ payment.receivedValue }}</td>
+          <td>{{ payment.invoice }}</td>
       </tr>
     </tbody>
   </table>
