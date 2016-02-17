@@ -54,11 +54,14 @@ namespace courseTypes {
 				function($scope: any, $state: any, $stateParams: any, $http: angular.IHttpService) {
 					
 					$scope.deleteCourseType = function (data: any)  {
-						$http.delete(`${url}/${data._id}`).then((resp) => {
-							if (resp.data['success']) {
-								$state.go($state.current, {}, {reload: true});
-							}
-						}); 
+						let result: boolean = confirm("Are you sure?");
+						if (result) {
+							$http.delete(`${url}/${data._id}`).then((resp) => {
+								if (resp.data['success']) {
+									$state.go($state.current, {}, {reload: true});
+								}
+							});
+						} 
 					};
 					
 					$http.get(`${url}/_find`).then((resp) => {

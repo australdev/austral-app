@@ -63,11 +63,14 @@ namespace coes {
 					$scope.texts.title = "Coe";
 					
 					$scope.deleteCoe = function (data: any)  {
-						$http.delete(`${url}/${data.id}`).then((resp) => {
-							if (resp.data['success']) {
-								$state.go($state.current, {}, {reload: true});
-							}
-						}); 
+						let result: boolean = confirm("Are you sure? All the information related to this coe will be lost!");
+						if (result) {
+							$http.delete(`${url}/${data.id}`).then((resp) => {
+								if (resp.data['success']) {
+									$state.go($state.current, {}, {reload: true});
+								}
+							});
+						}; 
 					};
 					
 					$http.get(`${url}/_find`).then((resp) => {
@@ -133,6 +136,9 @@ namespace coes {
 					if ($stateParams.coeId) {
 						$http.get(`${url}/${$stateParams.coeId}`).then((resp) => {
 							$scope.coe = resp.data['data'];
+							
+							$scope.texts.title = "Coe " + $scope.coe.student.name + " - " + $scope.coe.institution.name;
+							
 							$scope.coe.startDate = new Date($scope.coe.startDate);
 							$scope.coe.endDate = new Date($scope.coe.endDate);
 						});
@@ -184,17 +190,22 @@ namespace coes {
 					
 					$http.get(`${url}/${$stateParams.coeId}`).then((resp) => {
 						$scope.coe = resp.data['data'];
+						
+						$scope.texts.title = "Coe " + $scope.coe.student.name + " - " + $scope.coe.institution.name + " - Study Period";
 					});
 					
 					$scope.deleteStudyPeriod = function (data: any)  {
-						$http.delete(`${url_studyPeriod}/${data.id}`).then((resp) => {
-							if (resp.data['success']) {
-								const filters = {
-									coeId: $scope.coe._id	
-								};
-								$state.go($state.current, filters, {reload: true});
-							}
-						}); 
+						let result: boolean = confirm("Are you sure? All the information related to this study period will be lost!");
+						if (result) {
+							$http.delete(`${url_studyPeriod}/${data.id}`).then((resp) => {
+								if (resp.data['success']) {
+									const filters = {
+										coeId: $scope.coe._id	
+									};
+									$state.go($state.current, filters, {reload: true});
+								}
+							}); 
+						}
 					};
 					
 					$http.get(`${url_studyPeriod}/_find?coe=${$stateParams.coeId}`).then((resp) => {
@@ -261,6 +272,8 @@ namespace coes {
 					if ($scope.coeId) {
 						$http.get(`${url}/${$scope.coeId}`).then((resp) => {
 							$scope.coe = resp.data['data'];
+							
+							$scope.texts.title = "Coe - " + $scope.coe.student.name + " - " + $scope.coe.institution.name + " - Study Period";
 						});
 					}
 					 
@@ -322,6 +335,9 @@ namespace coes {
 					
 					$http.get(`${url_studyPeriod}/${$stateParams.studyPeriodId}`).then((resp) => {
 						$scope.studyPeriod = resp.data['data'];
+						
+						$scope.texts.title = "Coe - " + $scope.studyPeriod.coe.student.name + " - " + 
+						$scope.studyPeriod.coe.institution.name + " - Study Period - Payment";
 					});
 					
 					$scope.isOverdue = function (payment: Payment)  {
@@ -337,11 +353,14 @@ namespace coes {
 					};
 					
 					$scope.deletePayment = function (data: any)  {
-						$http.delete(`${url_payment}/${data.id}`).then((resp) => {
-							if (resp.data['success']) {
-								$state.go($state.current, {}, {reload: true});
-							}
-						}); 
+						let result: boolean = confirm("Are you sure? All the information related to this payment will be lost!");
+						if (result) {
+							$http.delete(`${url_payment}/${data.id}`).then((resp) => {
+								if (resp.data['success']) {
+									$state.go($state.current, {}, {reload: true});
+								}
+							});
+						} 
 					};
 										
 					$http.get(`${url_payment}/_find?studyPeriod=${$stateParams.studyPeriodId}`).then((resp) => {
@@ -434,6 +453,10 @@ namespace coes {
 					if ($stateParams.studyPeriodId) {
 						$http.get(`${url_studyPeriod}/${$stateParams.studyPeriodId}`).then((resp) => {
 							$scope.studyPeriod = resp.data['data'];
+							
+							$scope.texts.title = "Coe - " + $scope.studyPeriod.coe.student.name + " - " + 
+							$scope.studyPeriod.coe.institution.name + " - Study Period - Payment";
+						
 							// Data initialization based on parent's
 							$scope.payment = {
 								frequency: $scope.studyPeriod.frequency.description,

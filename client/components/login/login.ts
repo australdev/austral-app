@@ -16,16 +16,19 @@ namespace Login {
 
 	export class LoginController {
 		
+
 		private loginDetails: any;
 		private loginError: boolean;
 		private errorMessage: string;
 		/** @ngInject */
-		constructor(private $LoginRESTService: any, private $cookies: any, private $SignUpRESTService: any, 
-		private AuthToken: any, private $state: any) {
+		constructor(private $LoginRESTService: any, private $cookies: any, 
+			private $SignUpRESTService: any, private AuthToken: any, private $state: any) {
 			
 		};
+			
 		login() {
 			this.$LoginRESTService.accountLogin(this.loginDetails).then((response: any) => {
+			
 				this.loginError = !response.success;
 				this.errorMessage = response.msg;
 				if (response.success) {

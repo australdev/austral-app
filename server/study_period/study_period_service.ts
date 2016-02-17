@@ -6,7 +6,24 @@ export class StudyPeriodService extends BaseService<StudyPeriod> {
 
 	constructor() {
 		const defaultModelOptions: ModelOptions = {
-			population: 'coe frequency'
+			population: [
+				{
+					path: 'coe',
+					populate: [
+						{
+							path: 'institution',
+							model: 'institution'
+						},
+						{
+							path: 'student',
+							model: 'student'
+						}
+					]
+				},
+				{
+					path: 'frequency'		
+				}
+			]
 		};
 		super(StudyPeriodModel, defaultModelOptions);
 	}

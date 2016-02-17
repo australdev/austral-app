@@ -6,7 +6,7 @@ export class PaymentTypeService extends BaseService<PaymentType> {
 
 	constructor() {
 		const defaultModelOptions: ModelOptions = {
-			population: 'school client frequency'
+			population: 'studyPeriod'
 		};
 		super(PaymentTypeModel, defaultModelOptions);
 	}

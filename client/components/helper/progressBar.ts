@@ -6,6 +6,7 @@ namespace progressBar {
 		/** @ngInject */
 		constructor (private $log: any, private $state: any, private $scope: any, private $interval: any, private $timeout: any) {
 			$scope.$on('$stateChangeStart', (event: any, toState: any, toParams: any, fromState: any, fromParams: any) => {
+
 				this.progressValue = 50;
 				this.loading = true;
 				
@@ -13,7 +14,7 @@ namespace progressBar {
 			}) ;
 			
 			$scope.$on('$stateChangeSuccess', (event: any, toState: any, toParams: any, fromState: any, fromParams: any) => {
-				console.log('success', toState);
+			console.log('success', toState);
 				this.progressValue = 100;
 				this.type = 'success';
 				$timeout(() => {
