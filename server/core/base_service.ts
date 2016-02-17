@@ -60,7 +60,7 @@ export abstract class BaseService<T extends BaseDto> extends BaseAuthorizationSe
 					return;
 				}
 				
-				if (ObjectUtil.isBlank(foundDoc)) {
+				if (ObjectUtil.isBlank(foundDoc) || ObjectUtil.isPresent(foundDoc.deletedAt)) {
 					reject(new Error("Object could not be found"));
 					return;
 				}
@@ -92,7 +92,7 @@ export abstract class BaseService<T extends BaseDto> extends BaseAuthorizationSe
 					reject(err);
 					return;
 				}
-				if (ObjectUtil.isBlank(foundDoc)) {
+				if (ObjectUtil.isBlank(foundDoc) || ObjectUtil.isPresent(foundDoc.deletedAt)) {
 					reject(new Error("Object could not be found"));
 					return;
 				}
@@ -100,41 +100,22 @@ export abstract class BaseService<T extends BaseDto> extends BaseAuthorizationSe
 				if (ObjectUtil.isPresent(authError)) {
 					reject(new Error(authError));
 				}
-				foundDoc.remove((err: Error) => {
+				
+
+				foundDoc['deletedAt'] = Date.now();
+				
+				foundDoc.save((err: Error, savedDoc: any) => {
 					if (err) {
 						reject(err);
 						return;
 					}
-					resolve(foundDoc.toObject());
+					resolve(savedDoc.toObject());
 				});
+				
 			});
 		});
 	}
 
-	removeByFilter(data: T, newOptions: ModelOptions = {}): Promise<T[]> {
-		const txModelOptions = this.obtainTransactionModelOptionsAndAddData(data, newOptions);
-		return new Promise<T[]>((resolve: Function, reject: Function) => {
-			const authError = this.isRemoveAuthorized(txModelOptions);
-			if (ObjectUtil.isPresent(authError)) {
-				reject(new Error(authError));
-				return;
-			}
-			this.Model.find(ObjectUtil.createFilter(data)).populate(txModelOptions.population)
-			.exec((err, foundObjs) => {
-				if (err) {
-					reject(err);
-					return;
-				}
-				DatabaseObjectUtil.removeArrayPromise(foundObjs)
-				.then((results: any) => {
-					resolve(results);
-				})
-				.catch((err: any) => {
-					reject(err);
-				});	
-			});
-		});
-	}
 	
 	find(data: T, newOptions: ModelOptions = {}): Promise<T[]> {
 		const txModelOptions = this.obtainTransactionModelOptionsAndAddData(data, newOptions);
@@ -145,6 +126,7 @@ export abstract class BaseService<T extends BaseDto> extends BaseAuthorizationSe
 				return;
 			}
 			const search = this.obtainSearchExpression(data, txModelOptions);
+			ObjectUtil.merge(search, { deletedAt: { $exists: false }});
 			this.Model.find(search, txModelOptions.projection,
 			 { sort: '-createdAt', lean: true }).populate(txModelOptions.population)
 			.exec((err, foundObjs) => {
@@ -172,7 +154,7 @@ export abstract class BaseService<T extends BaseDto> extends BaseAuthorizationSe
 					reject(err);
 					return;
 				}
-				if (ObjectUtil.isBlank(foundObj)) {
+				if (ObjectUtil.isBlank(foundObj) || ObjectUtil.isPresent(foundObj['deletedAt'])) {
 					reject(new Error("Object not found"));
 					return;
 				}
@@ -187,10 +169,16 @@ export abstract class BaseService<T extends BaseDto> extends BaseAuthorizationSe
 			if (Object.keys(data).length < 1) {
 				reject(new Error('At least one filter value should be specified'));
 			}
-			this.Model.findOne(ObjectUtil.createFilter(data, false), null, { sort: '-createdAt', lean: true })
+			const search = ObjectUtil.createFilter(data, false);
+			ObjectUtil.merge(search, { deletedAt: { $exists: false }});
+			this.Model.findOne(search, null, { sort: '-createdAt', lean: true })
 			.exec((err, foundObj) => {
 				if (err) {
 					reject(err);
+					return;
+				}
+				if (ObjectUtil.isBlank(foundObj) || ObjectUtil.isPresent(foundObj['deletedAt'])) {
+					reject(new Error("Object not found"));
 					return;
 				}
 				resolve(ObjectUtil.isPresent(foundObj));
@@ -210,6 +198,7 @@ export abstract class BaseService<T extends BaseDto> extends BaseAuthorizationSe
 			if (Object.keys(search).length < 1) {
 				reject(new Error('At least one filter value should be specified'));
 			}
+			ObjectUtil.merge(search, { deletedAt: { $exists: false }});
 			this.Model.findOne(search, txModelOptions.projection,
 			 { sort: '-createdAt', lean: true }).populate(txModelOptions.population)
 			.exec((err, foundObj) => {
@@ -217,7 +206,7 @@ export abstract class BaseService<T extends BaseDto> extends BaseAuthorizationSe
 					reject(err);
 					return;
 				}
-				if (ObjectUtil.isBlank(foundObj)) {
+				if (ObjectUtil.isBlank(foundObj) || ObjectUtil.isPresent(foundObj['deletedAt'])) {
 					reject(new Error("Object not found"));
 					return;
 				}
@@ -234,6 +223,7 @@ export abstract class BaseService<T extends BaseDto> extends BaseAuthorizationSe
 				reject(new Error(authError));
 			}
 			const search = this.obtainSearchExpression(data);
+			ObjectUtil.merge(search, { deletedAt: { $exists: false }});
 			this.Model.find(search).distinct(txModelOptions.distinct)
 			.exec((err, foundObjs) => {
 				if (err) {

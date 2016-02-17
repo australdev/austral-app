@@ -15,24 +15,25 @@ db.once('open', () => console.log('%s: Connected to MongoDb on %s', new Date(), 
 
 
 const schemas = {
-  user: new Schema({
-    email: { type: String, unique: true, required: true },
-    password: { type: String, required: true },
-    name: { type: String, required: true },
-    userName: { type: String, required: true },
-    locale: { type: String },
-    picture: { type: String },
-    countryCode: { type: String },
-    timezone: { type: Number },
-    gender: { type: String },
-    verified: { type: Number },
-    status: { type: Number, default: 1, index: true, required: true },
-    lastLoginDate: { type: Date },
-    createdBy: { type: ObjectId, ref: 'user' },
-    createdAt: { type: Number },
-    updatedAt: { type: Number }
-  }),
-  coe: new Schema({
+  	user: new Schema({
+		email: { type: String, unique: true, required: true },
+		password: { type: String, required: true },
+		name: { type: String, required: true },
+		userName: { type: String, required: true },
+		locale: { type: String },
+		picture: { type: String },
+		countryCode: { type: String },
+		timezone: { type: Number },
+		gender: { type: String },
+		verified: { type: Number },
+		status: { type: Number, default: 1, index: true, required: true },
+		lastLoginDate: { type: Date },
+		createdBy: { type: ObjectId, ref: 'user' },
+		createdAt: { type: Number },
+		updatedAt: { type: Number },
+		deletedAt: { type: Number }
+	}),
+	coe: new Schema({
 		student: { type: ObjectId, ref: 'student', required: true, index: true },
 		institution: { type: ObjectId, ref: 'institution', required: true, index: true },
 		courseType: { type: ObjectId, ref: 'courseType', required: true, index: true },
@@ -43,16 +44,18 @@ const schemas = {
 		tuitionFee: { type: String, required: true },
 		createdBy: { type: ObjectId, ref: 'user' },
 		createdAt: { type: Number },
-		updatedAt: { type: Number }
+		updatedAt: { type: Number },
+		deletedAt: { type: Number }
 	}),
-  frequency: new Schema({
+  	frequency: new Schema({
 		code: { type: String, required: true },
 		description: { type: String, required: true },
 		periodicity: { type: Number, required: true },
 		minPeriod: { type: ObjectId, ref: 'periodicity', required: true },
 		createdBy: { type: ObjectId, ref: 'user' },
 		createdAt: { type: Number },
-		updatedAt: { type: Number }
+		updatedAt: { type: Number },
+		deletedAt: { type: Number }
 	}),
 	student: new Schema({
 		institutionCode: { type: String, required: true },
@@ -60,7 +63,8 @@ const schemas = {
 		email: { type: String, required: true },
 		createdBy: { type: ObjectId, ref: 'user' },
 		createdAt: { type: Number },
-		updatedAt: { type: Number }
+		updatedAt: { type: Number },
+	    deletedAt: { type: Number }
 	}),
 	payment: new Schema({
 		studyPeriod: { type: ObjectId, ref: 'studyPeriod', required: true, index: true },
@@ -78,14 +82,16 @@ const schemas = {
 		invoice: { type: Number },
 		createdBy: { type: ObjectId, ref: 'user' },
 		createdAt: { type: Number },
-		updatedAt: { type: Number }
+		updatedAt: { type: Number },
+	    deletedAt: { type: Number }
 	}),
 	institution: new Schema({
 		name: { type: String, required: true },
 		code: { type: String, required: true },
 		createdBy: { type: ObjectId, ref: 'user' },
 		createdAt: { type: Number },
-		updatedAt: { type: Number }
+		updatedAt: { type: Number },
+	    deletedAt: { type: Number }
 	}),
 	paymentType: new Schema({
 		code: { type: String, required: true },
@@ -93,7 +99,8 @@ const schemas = {
 		description: { type: String, required: true },
 		createdBy: { type: ObjectId, ref: 'user' },
 		createdAt: { type: Number },
-		updatedAt: { type: Number }
+		updatedAt: { type: Number },
+	    deletedAt: { type: Number }
 	}),
 	studyPeriod: new Schema({
 		coe: { type: ObjectId, ref: 'coe', required: true, index: true },
@@ -107,7 +114,8 @@ const schemas = {
 		frequency: { type: ObjectId, ref: 'frequency', required: true },
 		createdBy: { type: ObjectId, ref: 'user' },
 		createdAt: { type: Number },
-		updatedAt: { type: Number }
+		updatedAt: { type: Number },
+	    deletedAt: { type: Number }
 	}),
 	courseType: new Schema({
 		code: { type: String, required: true },
@@ -115,7 +123,8 @@ const schemas = {
 		description: { type: String, required: true },
 		createdBy: { type: ObjectId, ref: 'user' },
 		createdAt: { type: Number },
-		updatedAt: { type: Number }
+		updatedAt: { type: Number },
+	    deletedAt: { type: Number }
 	}),
 	periodicity: new Schema({
 		code: { type: String, required: true },
@@ -123,7 +132,8 @@ const schemas = {
 		description: { type: String, required: true },
 		createdBy: { type: ObjectId, ref: 'user' },
 		createdAt: { type: Number },
-		updatedAt: { type: Number }
+		updatedAt: { type: Number },
+	    deletedAt: { type: Number }
 	})
 };
 
@@ -168,4 +178,55 @@ schemas.user.pre('save', function (next: Function) {
       obj['password'] = hash;
       next();
   });  
+});
+
+schemas.student.post('save', function () {
+  const obj = this;
+  if (ObjectUtil.isBlank('deletedAt')) {
+    return;
+  }
+ 
+  CoeModel.find({ student: obj._id }, function (err, doc) {
+	for (let i = 0; i < doc.length; i++) {
+		doc[i]['deletedAt'] = Date.now();
+		doc[i].save();	
+	}
+	return;
+  });
+  
+  return;
+});
+
+schemas.coe.post('save', function () {
+  const obj = this;
+  if (ObjectUtil.isBlank('deletedAt')) {
+    return;
+  }
+ 
+  StudyPeriodModel.find({ coe: obj._id }, function (err, doc) {
+	for (let i = 0; i < doc.length; i++) {
+		doc[i]['deletedAt'] = Date.now();
+		doc[i].save();	
+	}
+	return;
+  }); 
+  
+  return;
+});
+
+schemas.studyPeriod.post('save', function () {
+  const obj = this;
+  if (ObjectUtil.isBlank('deletedAt')) {
+    return;
+  }
+ 
+  PaymentModel.find({ studyPeriod: obj._id }, function (err, doc) {
+	for (let i = 0; i < doc.length; i++) {
+		doc[i]['deletedAt'] = Date.now();
+		doc[i].save();	
+	}
+	return;
+  }); 
+  
+  return;
 });

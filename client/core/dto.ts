@@ -5,6 +5,7 @@ export interface BaseDto {
   createdBy?: any;
   createdAt?: number;
   updatedAt?: number;
+  deletedAt?: number;
 }
 
 export interface Notification {
@@ -189,4 +190,9 @@ export interface Periodicity extends BaseDto {
   name?: string;
   description?: string;
 
+}
+
+export interface AuthorizationResponse {
+  isAuthorized: boolean;
+  errorMessage?: string;
 }
